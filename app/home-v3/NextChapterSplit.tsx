@@ -2,7 +2,6 @@
 
 import { StickerImage } from "@/components/decor/StickerImage";
 import { Doodle } from "@/components/decor/Doodle";
-import { Reveal } from "@/components/motion/Reveal";
 import { useIsReducedMotion } from "@/components/motion/MotionProvider";
 import { Button } from "@/components/ui/Button";
 import { formatCohortDate, getNextClassStart } from "@/content/dates";

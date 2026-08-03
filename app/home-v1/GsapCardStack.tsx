@@ -7,7 +7,6 @@ import {
   Briefcase,
   Calendar,
   CheckCircle2,
-  Flame,
   GraduationCap,
   Monitor,
   Stethoscope,

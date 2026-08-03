@@ -55,7 +55,6 @@ export function AssetSlot(props: AssetSlotProps) {
   if (props.kind === "video" && props.src) {
     return (
       <div className={cn("relative overflow-hidden", className)} style={{ aspectRatio }} data-asset-slot={id}>
-        {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
         <video
           className="h-full w-full object-cover"
           style={{ filter: "saturate(0.85) contrast(1.04)" }}

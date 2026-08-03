@@ -33,7 +33,7 @@ export function PrepTeaser() {
           </h2>
           <p className="mx-auto mt-6 max-w-[38rem] text-lg leading-relaxed text-[var(--color-v4-text-2)]">
             A free study platform included with every program — AI tutoring, mock exams, flashcards, and a
-            readiness score that tells you exactly when you're ready.
+            readiness score that tells you exactly when you&apos;re ready.
           </p>
         </Reveal>
 
