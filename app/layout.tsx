@@ -1,6 +1,4 @@
-import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
-import { Footer } from "@/components/layout/Footer";
-import { Header } from "@/components/layout/Header";
+import { SiteChrome } from "@/components/layout/SiteChrome";
 import { SkipLink } from "@/components/layout/SkipLink";
 import { MotionProvider } from "@/components/motion/MotionProvider";
 import { ToastProvider } from "@/components/ui/Toast";
@@ -57,17 +55,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <SkipLink />
         <MotionProvider>
           <ToastProvider>
-            <AnnouncementBar
-              message={`Next cohort starts ${formatCohortDate(nextClassStart.startDate)} — seats limited`}
-              ctaLabel="Apply now"
-              ctaHref="/how-it-works/apply"
-              showOnPath="/"
-            />
-            <Header programs={programs} />
-            <main id="main-content" className="flex-1">
+            <SiteChrome
+              programs={programs}
+              announcementMessage={`Next cohort starts ${formatCohortDate(nextClassStart.startDate)} — seats limited`}
+            >
               {children}
-            </main>
-            <Footer />
+            </SiteChrome>
           </ToastProvider>
         </MotionProvider>
       </body>

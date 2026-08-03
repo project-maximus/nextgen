@@ -132,6 +132,108 @@
   --text-stat--line-height: 1;
   --text-stat--letter-spacing: -0.03em;
   --text-stat--font-weight: 700;
+
+  /* =====================================================================
+     Home v4 — Superpower-inspired design system (app/home-v4/** only).
+     Entirely new token names so nothing above is touched or reused; other
+     routes are unaffected. See nghi-master-build-prompt.md for the spec.
+     ===================================================================== */
+
+  /* ---- Color: ink scale (matches the logo — pure black, no hue) ---- */
+  --color-v4-ink-950: #050505;
+  --color-v4-ink-900: #0a0a0a;
+  --color-v4-ink-800: #171717;
+  --color-v4-ink-700: #2e2e2e;
+  --color-v4-ink-100: #e8e8e8;
+
+  /* ---- Color: neutrals (true grayscale — no hue) ---- */
+  --color-v4-white: #ffffff;
+  --color-v4-mist: #f5f5f5;
+  --color-v4-line: #e5e5e5;
+  --color-v4-line-dark: rgb(255 255 255 / 0.1);
+
+  /* ---- Color: text on light ---- */
+  --color-v4-text: #0a0a0a;
+  --color-v4-text-2: #525252;
+  --color-v4-text-3: #8a8a8a;
+
+  /* ---- Color: text on ink ---- */
+  --color-v4-text-inv: #ffffff;
+  --color-v4-text-inv-2: #c2c2c2;
+  --color-v4-text-inv-3: #8a8a8a;
+
+  /* ---- Color: semantic (product UI mockups only) ---- */
+  --color-v4-success: #157f5b;
+  --color-v4-warning: #b25e09;
+  --color-v4-error: #c03a2b;
+
+  /* ---- Radius ---- */
+  --radius-v4-chip: 8px;
+  --radius-v4-card: 12px;
+  --radius-v4-media: 16px;
+
+  /* ---- Shadow (the only two permitted) ---- */
+  --shadow-v4-card: 0 1px 2px rgb(0 0 0 / 0.06);
+  --shadow-v4-float: 0 24px 48px -24px rgb(0 0 0 / 0.35);
+
+  /* ---- Type scale (desktop values; components apply clamp()/responsive steps) ---- */
+  --text-v4-display-xl: clamp(2.75rem, 1.2rem + 5.2vw, 5.5rem);
+  --text-v4-display-xl--line-height: 0.98;
+  --text-v4-display-xl--letter-spacing: -0.03em;
+  --text-v4-display-xl--font-weight: 300;
+
+  --text-v4-display: clamp(2.375rem, 1.2rem + 3.6vw, 4rem);
+  --text-v4-display--line-height: 1.02;
+  --text-v4-display--letter-spacing: -0.025em;
+  --text-v4-display--font-weight: 300;
+
+  --text-v4-h1: clamp(2.125rem, 1.3rem + 2.6vw, 3.25rem);
+  --text-v4-h1--line-height: 1.06;
+  --text-v4-h1--letter-spacing: -0.02em;
+  --text-v4-h1--font-weight: 400;
+
+  --text-v4-h2: clamp(1.75rem, 1.2rem + 1.9vw, 2.5rem);
+  --text-v4-h2--line-height: 1.12;
+  --text-v4-h2--letter-spacing: -0.015em;
+  --text-v4-h2--font-weight: 400;
+
+  --text-v4-h3: clamp(1.375rem, 1.1rem + 0.9vw, 1.75rem);
+  --text-v4-h3--line-height: 1.25;
+  --text-v4-h3--letter-spacing: -0.01em;
+  --text-v4-h3--font-weight: 500;
+
+  --text-v4-h4: clamp(1.1875rem, 1.05rem + 0.4vw, 1.375rem);
+  --text-v4-h4--line-height: 1.35;
+  --text-v4-h4--letter-spacing: -0.005em;
+  --text-v4-h4--font-weight: 500;
+
+  --text-v4-h5: 1.125rem;
+  --text-v4-h5--line-height: 1.45;
+  --text-v4-h5--font-weight: 600;
+
+  --text-v4-eyebrow: 0.75rem;
+  --text-v4-eyebrow--line-height: 1.4;
+  --text-v4-eyebrow--letter-spacing: 0.14em;
+  --text-v4-eyebrow--font-weight: 600;
+
+  --text-v4-body-lg: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+  --text-v4-body-lg--line-height: 1.65;
+
+  --text-v4-body: 1rem;
+  --text-v4-body--line-height: 1.65;
+
+  --text-v4-small: 0.875rem;
+  --text-v4-small--line-height: 1.55;
+  --text-v4-small--letter-spacing: 0.005em;
+
+  --text-v4-caption: 0.75rem;
+  --text-v4-caption--line-height: 1.5;
+  --text-v4-caption--letter-spacing: 0.02em;
+  --text-v4-caption--font-weight: 500;
+
+  --text-v4-button: 0.9375rem;
+  --text-v4-button--line-height: 1;
+  --text-v4-button--font-weight: 600;
 }
 
 :root {
@@ -217,5 +319,61 @@ body {
   }
   50% {
     transform: translateY(-10px);
+  }
+}
+
+/* ==========================================================================
+   Home v4 only — scoped under .v4-scope (set on the route's root wrapper)
+   so nothing here leaks into other routes sharing this stylesheet.
+   ========================================================================== */
+.v4-scope {
+  font-family: var(--font-sora), sans-serif;
+}
+
+.v4-scope .tnum {
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+}
+
+/* Per §5: gold-400 outline on navy backgrounds, navy-700 outline on light. */
+.v4-scope :focus-visible {
+  outline: 2px solid var(--color-v4-ink-700);
+  outline-offset: 3px;
+  box-shadow: none;
+  border-radius: 4px;
+}
+
+.v4-scope .v4-on-navy :focus-visible {
+  outline-color: var(--color-v4-white);
+}
+
+/* GSAP Reveal/RevealLines initial state — cleared by autoAlpha, so content
+   is present (and readable by non-JS/AT) even before the trigger fires. */
+.v4-scope .gsap-hidden {
+  visibility: hidden;
+}
+
+/* Partner logo marquee — continuous leftward scroll, paused on hover so
+   users can actually see the color reveal instead of it flying past. */
+@keyframes v4-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.v4-scope .marquee-track {
+  animation: v4-marquee 28s linear infinite;
+}
+
+.v4-scope .marquee-strip:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v4-scope .marquee-track {
+    animation: none;
   }
 }
