@@ -55,11 +55,12 @@ function Card({ activeIndex }: { activeIndex: number }) {
             sizes="(max-width: 1600px) 100vw, 1600px"
             priority={i === 0}
             className="object-cover"
-            style={{ filter: "saturate(0.9) contrast(1.05)" }}
+            style={{ filter: "saturate(0.6) contrast(1.0) brightness(0.65)" }}
           />
         </div>
       ))}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/25 to-black/10" aria-hidden="true" />
+      <div className="absolute inset-0 bg-black/35" aria-hidden="true" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 to-black/45" aria-hidden="true" />
 
       <div className="relative z-10 flex h-full flex-col justify-between px-8 py-10 md:flex-row md:items-center md:justify-between md:px-12 md:py-14">
         <div className="w-full max-w-sm shrink-0">

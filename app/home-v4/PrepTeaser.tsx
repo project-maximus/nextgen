@@ -1,24 +1,7 @@
 import { Reveal } from "@/components/motion-v4/Reveal";
-import { ArrowRight, Bot, CalendarCheck, ClipboardCheck } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-
-const features = [
-  {
-    icon: Bot,
-    title: "AI Tutor",
-    description: "Ask questions while you study and get clear, sourced answers instantly.",
-  },
-  {
-    icon: CalendarCheck,
-    title: "Adaptive Study Plans",
-    description: "A schedule that reorders itself around your program and your weak spots.",
-  },
-  {
-    icon: ClipboardCheck,
-    title: "Mock Exams",
-    description: "Full-length practice tests that match your certification's real format.",
-  },
-];
+import { PrepToolsGrid } from "./PrepToolsGrid";
 
 export function PrepTeaser() {
   return (
@@ -38,15 +21,7 @@ export function PrepTeaser() {
         </Reveal>
 
         <Reveal delay={0.1}>
-          <div className="mx-auto mt-16 grid max-w-4xl grid-cols-1 gap-px overflow-hidden rounded-2xl bg-[var(--color-v4-line)] sm:grid-cols-3">
-            {features.map((feature) => (
-              <div key={feature.title} className="flex flex-col items-center gap-3 bg-white p-8 text-center">
-                <feature.icon className="size-6 text-[var(--color-v4-text)]" strokeWidth={1.5} aria-hidden="true" />
-                <h3 className="text-base font-medium text-[var(--color-v4-text)]">{feature.title}</h3>
-                <p className="text-sm leading-relaxed text-[var(--color-v4-text-2)]">{feature.description}</p>
-              </div>
-            ))}
-          </div>
+          <PrepToolsGrid />
         </Reveal>
 
         <Reveal delay={0.15}>

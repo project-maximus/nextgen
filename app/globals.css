@@ -377,3 +377,18 @@ body {
     animation: none;
   }
 }
+
+/* Feature card marquee — same mechanism, slower for heavier content. */
+.v4-scope .feature-marquee-track {
+  animation: v4-marquee 60s linear infinite;
+}
+
+.v4-scope .feature-marquee-strip:hover .feature-marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v4-scope .feature-marquee-track {
+    animation: none;
+  }
+}

@@ -2,6 +2,7 @@ import { pageMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import { CredibilityStrip } from "./CredibilityStrip";
 import { FAQSection } from "./FAQSection";
+import { FeatureMarquee } from "./FeatureMarquee";
 import { FinalCTA } from "./FinalCTA";
 import { Hero } from "./Hero";
 import { PartnerMarquee } from "./PartnerMarquee";
@@ -30,6 +31,7 @@ export default function HomeV4Page() {
       <StoryScroll />
       <FAQSection />
       <FinalCTA />
+      <FeatureMarquee />
     </>
   );
 }
