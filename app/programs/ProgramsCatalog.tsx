@@ -1,5 +1,6 @@
 "use client";
 
+import { FinalCTA } from "@/app/FinalCTA";
 import { Reveal } from "@/components/motion-v4/Reveal";
 import { useLenis } from "@/components/motion-v4/SmoothScrollProvider";
 import { programCategories, programs } from "@/content/programs";
@@ -8,6 +9,7 @@ import { ArrowRight, Search, Stethoscope } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { ProgramsFaq } from "./ProgramsFaq";
 
 const formatLabel: Record<ProgramFormat, string> = {
   hybrid: "Hybrid",
@@ -132,15 +134,15 @@ export function ProgramsCatalog() {
         <div className="mx-auto max-w-[1600px] px-3 md:px-5 xl:px-6">
           <div className="relative flex min-h-[420px] items-end overflow-hidden rounded-[32px] px-6 pb-10 pt-32 sm:min-h-[480px] sm:px-8 sm:pb-12 md:px-11 xl:px-12">
             <Image
-              src="/images/programs/medical-assistant-card.jpg"
+              src="/images/programs/programs-hero.png"
               alt=""
               fill
               priority
               sizes="100vw"
-              className="object-cover"
-              style={{ filter: "saturate(0.85) contrast(1.05) brightness(0.55)" }}
+              className="object-cover object-[62%_30%]"
+              style={{ filter: "contrast(1.05)" }}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" aria-hidden="true" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-black/10" aria-hidden="true" />
             <div className="relative w-full max-w-[1600px]">
               <Reveal>
                 <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/70">Certification Programs</p>
@@ -267,6 +269,9 @@ export function ProgramsCatalog() {
           </div>
         </div>
       </div>
+
+      <ProgramsFaq />
+      <FinalCTA />
     </div>
   );
 }

@@ -10,7 +10,7 @@ const VIDEO_CHAPTERS = [
   { label: "Common Artifacts", active: false },
 ];
 
-function VideoLessonsVisual() {
+export function VideoLessonsVisual() {
   return (
     <div className="w-full rounded-2xl text-left bg-white p-4 shadow-[var(--shadow-v4-float)] rotate-[2deg] transition-transform duration-500 ease-out group-hover:rotate-0">
       <div className="relative flex h-16 items-center justify-center overflow-hidden rounded-xl bg-[var(--color-v4-ink-900)]">
