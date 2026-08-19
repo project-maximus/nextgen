@@ -121,6 +121,8 @@ export function StoryScroll() {
       if (!el) return;
       const rect = el.getBoundingClientRect();
       const scrollable = rect.height - window.innerHeight;
+      // Also true when the pinned wrapper is `display: none` below `lg`
+      // (zero-size rect) — the compact list renders separately below.
       if (scrollable <= 0) return;
       const progress = Math.min(1, Math.max(0, -rect.top / scrollable));
       const idx = Math.min(steps.length - 1, Math.floor(progress * steps.length));
@@ -149,12 +151,31 @@ export function StoryScroll() {
   }
 
   return (
-    <section ref={sectionRef} className="v4-scope bg-white" style={{ height: `${steps.length * VH_PER_STEP}vh` }}>
-      <div className="sticky top-0 flex h-screen items-center">
-        <div className="mx-auto w-full max-w-[1600px] px-3 md:px-5 xl:px-6">
-          <Card activeIndex={activeIndex} />
+    <>
+      {/* Below `lg` there's no room/pointer precision for a 4-step pinned
+       * scrub — touch-scroll flicks past dead space instead of settling on
+       * a step, so a plain stacked list takes over. Both variants render
+       * unconditionally and are toggled with CSS (not JS/viewport state) so
+       * there's no post-mount layout shift to desync GSAP ScrollTrigger on
+       * the sections below this one. */}
+      <section
+        ref={sectionRef}
+        className="v4-scope hidden bg-white lg:block"
+        style={{ height: `${steps.length * VH_PER_STEP}vh` }}
+      >
+        <div className="sticky top-0 flex h-screen items-center">
+          <div className="mx-auto w-full max-w-[1600px] px-3 md:px-5 xl:px-6">
+            <Card activeIndex={activeIndex} />
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+      <section className="v4-scope bg-white py-16 lg:hidden">
+        <div className="mx-auto flex max-w-[1600px] flex-col gap-6 px-3 md:px-5 xl:px-6">
+          {steps.map((step, i) => (
+            <Card key={step.title} activeIndex={i} />
+          ))}
+        </div>
+      </section>
+    </>
   );
 }

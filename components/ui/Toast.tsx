@@ -80,8 +80,8 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                   className={cn(
                     "flex w-full max-w-sm items-start gap-3 rounded-md border px-4 py-3 shadow-md",
                     toast.variant === "success"
-                      ? "border-success/20 bg-success-bg text-success"
-                      : "border-error/20 bg-error-bg text-error",
+                      ? "border-[var(--color-v4-success)]/30 bg-[var(--color-v4-success)]/10 text-[var(--color-v4-success)]"
+                      : "border-[var(--color-v4-error)]/30 bg-[var(--color-v4-error)]/10 text-[var(--color-v4-error)]",
                   )}
                 >
                   {toast.variant === "success" ? (
@@ -89,7 +89,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                   ) : (
                     <XCircle className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
                   )}
-                  <p className="flex-1 text-body-sm">{toast.message}</p>
+                  <p className="flex-1 text-sm">{toast.message}</p>
                   <button
                     type="button"
                     onClick={() => dismiss(toast.id)}

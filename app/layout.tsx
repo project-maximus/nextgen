@@ -1,24 +1,15 @@
-import { SiteChrome } from "@/components/layout/SiteChrome";
+import { AnnouncementBar } from "@/app/AnnouncementBar";
+import { Footer } from "@/app/Footer";
+import { Header } from "@/app/Header";
 import { SkipLink } from "@/components/layout/SkipLink";
 import { MotionProvider } from "@/components/motion/MotionProvider";
+import { SmoothScrollProvider } from "@/components/motion-v4/SmoothScrollProvider";
 import { ToastProvider } from "@/components/ui/Toast";
-import { formatCohortDate, getNextClassStart } from "@/content/dates";
-import { programs } from "@/content/programs";
 import { site } from "@/content/site";
 import { jsonLd, localBusinessSchema, organizationSchema } from "@/lib/schema";
 import type { Metadata } from "next";
-import { Fraunces, Sora } from "next/font/google";
+import { Sora } from "next/font/google";
 import "./globals.css";
-
-// Variable weight + SOFT/WONK axes loaded so `.font-display` can dial in
-// the warm, slightly quirky SOFT setting via font-variation-settings.
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
-  subsets: ["latin"],
-  weight: "variable",
-  axes: ["SOFT", "WONK"],
-  display: "swap",
-});
 
 const sora = Sora({
   variable: "--font-sora",
@@ -37,10 +28,8 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const nextClassStart = getNextClassStart();
-
   return (
-    <html lang="en" className={`${fraunces.variable} ${sora.variable}`}>
+    <html lang="en" className={sora.variable}>
       <head>
         <script
           type="application/ld+json"
@@ -55,12 +44,16 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <SkipLink />
         <MotionProvider>
           <ToastProvider>
-            <SiteChrome
-              programs={programs}
-              announcementMessage={`Next cohort starts ${formatCohortDate(nextClassStart.startDate)} — seats limited`}
-            >
-              {children}
-            </SiteChrome>
+            <SmoothScrollProvider>
+              <div className="v4-scope flex min-h-screen flex-1 flex-col">
+                <AnnouncementBar />
+                <Header />
+                <main id="main-content" className="flex-1">
+                  {children}
+                </main>
+                <Footer />
+              </div>
+            </SmoothScrollProvider>
           </ToastProvider>
         </MotionProvider>
       </body>

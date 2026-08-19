@@ -9,19 +9,19 @@ import { useEffect, useState } from "react";
 
 const navLinks = [
   { label: "Programs", href: "/programs" },
-  { label: "NGHI Prep", href: "/home-v4/prep" },
-  { label: "Outcomes", href: "/home-v4/outcomes" },
-  { label: "About", href: "/home-v4/about" },
-  { label: "How It Works", href: "/home-v4/how-it-works" },
+  { label: "NGHI Prep", href: "/prep" },
+  { label: "Outcomes", href: "/outcomes" },
+  { label: "About", href: "/about" },
+  { label: "How It Works", href: "/how-it-works" },
 ];
 
 const leftLinks = navLinks.slice(0, 2);
 
-function DotGridIcon() {
+function DotGridIcon({ tone = "light" }: { tone?: "light" | "dark" }) {
   return (
     <div className="grid grid-cols-3 gap-[3px]" aria-hidden="true">
       {Array.from({ length: 9 }).map((_, i) => (
-        <span key={i} className="size-[3px] rounded-full bg-white" />
+        <span key={i} className={`size-[3px] rounded-full ${tone === "dark" ? "bg-[var(--color-v4-ink-900)]" : "bg-white"}`} />
       ))}
     </div>
   );
@@ -64,8 +64,41 @@ export function Header() {
 
   return (
     <>
+      {/* Mobile nav — flush to the very top, solid white, identical before
+       * and after scroll (no condensed/expanded swap, no repositioning). */}
+      <div className="v4-scope fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between gap-3 bg-white px-4 sm:hidden">
+        <Link href="/" className="flex items-center" aria-label="NextGen Health Institute">
+          <Image
+            src="/logos/nextgen-full-black.png"
+            alt="NextGen Health Institute"
+            width={1402}
+            height={478}
+            priority
+            className="h-7 w-auto"
+          />
+        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/how-it-works/apply"
+            className="inline-flex h-10 shrink-0 items-center rounded-full bg-[var(--color-v4-ink-900)] px-5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-[var(--color-v4-ink-800)]"
+          >
+            Apply Now
+          </Link>
+          <button
+            type="button"
+            onClick={() => setDrawerOpen(true)}
+            aria-label="Open menu"
+            className="flex size-10 shrink-0 items-center justify-center rounded-full border border-[var(--color-v4-line)] bg-[var(--color-v4-mist)] transition-colors duration-200 hover:bg-[var(--color-v4-line)]"
+          >
+            <DotGridIcon tone="dark" />
+          </button>
+        </div>
+      </div>
+
+      {/* Tablet/desktop nav — transparent hero header that condenses into a
+       * floating pill on scroll, unchanged. */}
       <div
-        className={`v4-scope fixed inset-x-0 z-50 flex justify-center transition-[top] duration-300 ${
+        className={`v4-scope fixed inset-x-0 z-50 hidden justify-center transition-[top] duration-300 sm:flex ${
           pastAnnouncementBar ? "top-0" : "top-10"
         }`}
       >
@@ -73,10 +106,10 @@ export function Header() {
           className={`flex w-full items-center transition-[max-width,height,margin-top,border-radius,padding,background-color,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
             condensed
               ? "mt-3 h-16 max-w-[760px] rounded-full bg-[var(--color-v4-ink-900)]/95 px-4 shadow-[var(--shadow-v4-float)] backdrop-blur-md sm:px-5"
-              : "mt-0 h-[92px] max-w-[1600px] rounded-none bg-transparent px-9 md:px-11 xl:px-12"
+              : "mt-0 h-[92px] max-w-[1600px] rounded-none bg-transparent px-4 sm:px-9 md:px-11 xl:px-12"
           }`}
         >
-          <div className="grid w-full grid-cols-[1fr_auto_1fr] items-center gap-4">
+          <div className="grid w-full grid-cols-[auto_1fr_auto] items-center gap-2 sm:gap-4">
             {/* left zone: Programs / NGHI Prep — the rest live behind the hamburger */}
             <div className="flex items-center">
               <nav aria-label="Primary" className="hidden items-center gap-7 lg:flex">
@@ -98,7 +131,7 @@ export function Header() {
 
             {/* center zone: logo — pill mark when condensed, real lockup (original colors) on hero */}
             <div className="flex justify-center">
-              <Link href="/home-v4" className="flex items-center" aria-label="NextGen Health Institute">
+              <Link href="/" className="flex items-center" aria-label="NextGen Health Institute">
                 <AnimatePresence mode="wait" initial={false}>
                   {condensed ? (
                     <motion.span
@@ -133,7 +166,7 @@ export function Header() {
                         width={1402}
                         height={479}
                         priority
-                        className="h-9 w-auto"
+                        className="h-7 w-auto sm:h-9"
                       />
                     </motion.span>
                   )}
@@ -142,7 +175,7 @@ export function Header() {
             </div>
 
             {/* right zone: actions + persistent hamburger (opens the full nav) */}
-            <div className="flex items-center justify-end gap-3">
+            <div className="flex items-center justify-end gap-1.5 sm:gap-3">
               <AnimatePresence initial={false}>
                 {!condensed && (
                   <motion.div
@@ -167,7 +200,7 @@ export function Header() {
                 className={
                   condensed
                     ? "inline-flex h-10 shrink-0 items-center rounded-full bg-white px-5 text-sm font-semibold text-[var(--color-v4-ink-900)] transition-[background-color,transform] duration-150 hover:-translate-y-px hover:bg-[var(--color-v4-mist)]"
-                    : "inline-flex h-11 shrink-0 items-center rounded-full bg-white px-7 text-[15px] font-semibold text-[var(--color-v4-ink-900)] transition-[background-color,transform] duration-150 hover:-translate-y-px hover:bg-[var(--color-v4-mist)]"
+                    : "inline-flex h-11 shrink-0 items-center rounded-full bg-white px-4 text-sm font-semibold text-[var(--color-v4-ink-900)] transition-[background-color,transform] duration-150 hover:-translate-y-px hover:bg-[var(--color-v4-mist)] sm:px-7 sm:text-[15px]"
                 }
               >
                 Apply Now

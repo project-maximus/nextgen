@@ -26,7 +26,7 @@ export function PrepTeaser() {
 
         <Reveal delay={0.15}>
           <Link
-            href="/home-v4/prep"
+            href="/prep"
             className="mt-10 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-v4-text)] hover:text-[var(--color-v4-text-2)]"
           >
             See NGHI Prep
