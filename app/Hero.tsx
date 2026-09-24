@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
 import { Check } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRef } from "react";
 
 gsap.registerPlugin(SplitText);
@@ -97,18 +98,18 @@ export function Hero() {
               </h1>
 
               <div ref={ctaRef} className="mt-8 flex flex-wrap items-center gap-3 opacity-0">
-                <a
+                <Link
                   href="/how-it-works/apply"
                   className="inline-flex h-12 items-center rounded-full bg-white px-7 text-[15px] font-semibold text-[var(--color-v4-ink-900)] transition-[background-color,transform] duration-150 hover:-translate-y-px hover:bg-[var(--color-v4-mist)]"
                 >
                   Apply Now
-                </a>
-                <a
+                </Link>
+                <Link
                   href="/programs"
                   className="inline-flex h-12 items-center rounded-full bg-white/20 px-7 text-[15px] font-semibold text-white backdrop-blur-md transition-colors duration-150 hover:bg-white/30"
                 >
                   View Programs
-                </a>
+                </Link>
               </div>
             </div>
 
