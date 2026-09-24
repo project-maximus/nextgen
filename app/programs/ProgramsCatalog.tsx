@@ -18,12 +18,11 @@ const formatLabel: Record<ProgramFormat, string> = {
   flexible: "Flexible",
 };
 
-// Most of the stock photography under public/images/programs/ turned out to
-// be mismatched (unrelated travel/nature shots) when audited — these four
-// card images are the only ones confirmed to actually depict the program.
-// Everything else falls back to a plain icon tile rather than show the
-// wrong photo. Remove an entry here once its real photo is in place.
-const VERIFIED_CARD_IMAGE_SLUGS = new Set(["medical-assistant", "nursing-assistant", "phlebotomy-technician", "ekg-technician"]);
+// The original stock photography under public/images/programs/ was
+// mismatched (travel/nature shots) for most programs; content/programs.ts now
+// points every program at a photo that actually depicts healthcare work.
+// Drop a slug from this set to fall back to the plain icon tile.
+const VERIFIED_CARD_IMAGE_SLUGS = new Set(programs.map((p) => p.slug));
 
 const categories = programCategories.filter(
   (c): c is { value: ProgramCategory; label: string } => c.value !== "all",

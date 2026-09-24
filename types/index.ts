@@ -2,33 +2,16 @@ export type ProgramCategory = "clinical" | "administrative" | "specialized";
 export type ProgramFormat = "in-person" | "hybrid" | "online" | "flexible";
 
 export interface CurriculumModule {
-  module: string;
-  outcomes: string[];
-}
-
-export interface ProgramFaq {
-  q: string;
-  a: string;
+  title: string;
+  detail: string;
 }
 
 export interface ProgramOutlook {
   employmentRate: string;
   salaryRange: string;
   growth: string;
+  /** "Career Opportunities" list, verbatim from the live program page. */
   environments: string[];
-  source?: string;
-}
-
-export interface ProgramTuition {
-  amount?: number;
-  note: string;
-  includes: string[];
-}
-
-export interface ProgramHours {
-  classroom: number;
-  lab: number;
-  externship: number;
 }
 
 export interface ProgramCertification {
@@ -40,6 +23,8 @@ export interface ProgramCertification {
 export interface Program {
   slug: string;
   name: string;
+  /** Full program title exactly as the live site lists it. */
+  officialName: string;
   shortName: string;
   category: ProgramCategory;
   duration: string;
@@ -50,12 +35,20 @@ export interface Program {
   description: string[];
   heroImage: string;
   cardImage: string;
-  curriculum: CurriculumModule[];
-  hours: ProgramHours;
+  /** "Core Learning Objectives", verbatim from the live program page. */
+  objectives: string[];
+  /** Accordion modules on the program page. */
+  modules: CurriculumModule[];
+  /** Short "What you'll learn" tags in the overview sidebar. */
+  skills: string[];
+  /** Pills in the hands-on training section. */
+  handsOn: string[];
+  /** Overrides the default hands-on paragraph (for non-clinical programs). */
+  handsOnIntro?: string;
+  /** Placeholder graduate quote — swap for a real one before launch. */
+  studentQuote: string;
   certification: ProgramCertification;
   outlook: ProgramOutlook;
-  tuition?: ProgramTuition;
-  faqs: ProgramFaq[];
   relatedSlugs: string[];
 }
 

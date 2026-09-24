@@ -2,49 +2,78 @@ import type { Program } from "@/types";
 
 /**
  * Single source of truth for the 11-program catalog. Every nav dropdown, filter,
- * form <select>, and related-program card must read from this array — never a
- * separate hard-coded list. Durations/formats match the confirmed catalog exactly.
+ * form <select>, program page, and related-program card reads from this array.
  *
- * Curriculum outcomes, outlook figures, and tuition notes are realistic sample
- * data pending real figures from the client; they are structured so real data
- * is a drop-in replacement, never inline copy in a component.
+ * Verified against nghi-omega.vercel.app/programs/<slug> (the live site):
+ *   officialName, blurb, description, duration, format, objectives,
+ *   outlook (employment rate, salary range, growth, career opportunities).
+ * Also sourced from the live objectives: MBC's CPC/CBCS prep, MRI's ARRT prep,
+ * MA's CMA/RMA prep.
+ *
+ * Photos for nursing-assistant, patient-care-technician, medical-administrative-
+ * assistant, medical-billing-coding, mental-health-technician, orthopedic-casting,
+ * and physical-therapy-aide are free-license Unsplash stock (unsplash.com/license)
+ * — replace with real campus photography when available.
+ *
+ * Sample content pending real material from the client: modules (accordion
+ * copy expanding each real objective), skills, handsOn, studentQuote, and the
+ * certification exam/body where the live site doesn't name one.
  */
 export const programs: Program[] = [
   {
     slug: "medical-assistant",
     name: "Medical Assistant",
+    officialName: "Medical Assistant Program",
     shortName: "Medical Assistant",
     category: "clinical",
     duration: "12 weeks full-time or 24 weeks part-time",
     durationWeeks: [12, 24],
     format: "hybrid",
     credential: "CMA & RMA Certification Prep",
-    blurb:
-      "Vital members of the medical team, skilled in both patient care and administrative tasks.",
+    blurb: "Vital members of the medical team, skilled in both patient care and administrative tasks.",
     description: [
       "Become a vital member of the medical team with our comprehensive Medical Assistant Program. Medical Assistants are the backbone of clinical teams — skilled in both patient care and administrative tasks. From taking vital signs to managing medical records, they ensure healthcare runs smoothly and compassionately.",
     ],
-    heroImage: "/images/programs/medical-assistant-hero.jpg",
+    heroImage: "/images/programs/medical-assistant-card.jpg",
     cardImage: "/images/programs/medical-assistant-card.jpg",
-    // Verbatim from the live "Core Learning Objectives" list — a single flat
-    // list on the source site, not separate modules. Do not split or expand
-    // without new source content; see nghi-omega.vercel.app/programs/medical-assistant.
-    curriculum: [
+    objectives: [
+      "Medical terminology, anatomy, patient care",
+      "Clinical & administrative skills",
+      "Phlebotomy, orthopedic casting, diagnostic testing",
+      "Vital signs, injections, EKGs, sterilization",
+      "CMA (Certified Medical Assistant) certification prep",
+      "RMA (Registered Medical Assistant) certification prep",
+    ],
+    modules: [
       {
-        module: "Core Learning Objectives",
-        outcomes: [
-          "Medical terminology, anatomy, patient care",
-          "Clinical & administrative skills",
-          "Phlebotomy, orthopedic casting, diagnostic testing",
-          "Vital signs, injections, EKGs, sterilization",
-          "CMA (Certified Medical Assistant) certification prep",
-          "RMA (Registered Medical Assistant) certification prep",
-        ],
+        title: "Foundations of Healthcare",
+        detail: "Medical terminology, anatomy, and workplace safety — the shared vocabulary every clinical task builds on.",
+      },
+      {
+        title: "Clinical Skills",
+        detail: "Vitals, patient preparation, and infection-control protocols you'll use in every patient interaction.",
+      },
+      {
+        title: "Phlebotomy & Lab Procedures",
+        detail: "Venipuncture technique, specimen collection and handling, and lab safety standards.",
+      },
+      {
+        title: "EKG & Diagnostic Procedures",
+        detail: "Electrocardiogram administration, basic rhythm recognition, and supporting diagnostic testing.",
+      },
+      {
+        title: "Administrative Skills",
+        detail: "Patient records, scheduling, insurance basics, and HIPAA-compliant documentation.",
+      },
+      {
+        title: "Certification Preparation",
+        detail: "Structured review and practice testing for the CMA and RMA exams, through exam day.",
       },
     ],
-    // Placeholder pending real hour figures from the client — not shown on
-    // the medical-assistant program page, which has no hours breakdown.
-    hours: { classroom: 220, lab: 140, externship: 160 },
+    skills: ["Patient Vitals", "EKG Basics", "Phlebotomy", "Clinical Procedures", "Medical Terminology", "Patient Communication"],
+    handsOn: ["EKG", "Phlebotomy", "Vitals", "Patient Care"],
+    studentQuote:
+      "I came in with no healthcare experience and left confident enough to start my first clinical role.",
     certification: { exam: "CMA & RMA Certification", body: "AMCA", onCampus: true },
     outlook: {
       employmentRate: "95%+",
@@ -52,643 +81,653 @@ export const programs: Program[] = [
       growth: "Above Average",
       environments: ["Physician Offices", "Hospitals", "Outpatient Clinics", "Urgent Care Centers", "Specialty Practices"],
     },
-    // No tuition amount or "included" list is published on the live site —
-    // only financial-aid availability (Pell Grants, federal loans, merit
-    // scholarships). Do not invent a price or inclusions list here.
-    faqs: [],
     relatedSlugs: ["nursing-assistant", "medical-billing-coding"],
   },
   {
     slug: "nursing-assistant",
     name: "Nursing Assistant",
+    officialName: "Nursing Assistant Certification (NAC)",
     shortName: "CNA",
     category: "clinical",
     duration: "8–12 weeks",
     durationWeeks: [8, 12],
     format: "hybrid",
-    credential: "Certified Nursing Assistant (CNA)",
-    blurb: "The fastest path into direct patient care, with skills that transfer straight into a hospital or long-term care role.",
+    credential: "Nursing Assistant Certification (NAC)",
+    blurb: "The heart of healthcare, providing compassionate care and support to patients.",
     description: [
-      "Certified Nursing Assistants provide the hands-on daily care patients depend on — bathing, mobility support, feeding, and vital signs — under the supervision of nurses.",
-      "This program combines classroom fundamentals with supervised clinical hours at a partner facility, preparing you for the Texas Nurse Aide state exam.",
+      "Nursing Assistants are the heart of healthcare, providing compassionate care and support to patients in hospitals, nursing homes, and long-term care facilities. They ensure comfort and safety while working closely with nurses and physicians.",
     ],
-    heroImage: "/images/programs/nursing-assistant-hero.jpg",
-    cardImage: "/images/programs/nursing-assistant-card.jpg",
-    curriculum: [
+    heroImage: "/images/programs/nursing-assistant.jpg",
+    cardImage: "/images/programs/nursing-assistant.jpg",
+    objectives: [
+      "Basic nursing skills and patient care techniques",
+      "Infection control and safety procedures",
+      "Effective communication with patients and families",
+      "Vital signs measurement and monitoring",
+      "Assisting with activities of daily living",
+      "Legal and ethical considerations in nursing care",
+    ],
+    modules: [
       {
-        module: "Resident & Patient Care",
-        outcomes: [
-          "Assist patients with bathing, dressing, grooming, and mobility",
-          "Safely transfer and reposition patients using proper body mechanics",
-          "Recognize and report changes in a patient's condition",
-        ],
+        title: "Basic Nursing Skills & Patient Care",
+        detail: "Bed-making, positioning, hygiene, and the everyday care techniques patients depend on.",
       },
       {
-        module: "Clinical Skills",
-        outcomes: [
-          "Take vital signs and record intake/output accurately",
-          "Follow infection-control and standard-precaution protocols",
-          "Support feeding and nutrition needs, including special diets",
-        ],
+        title: "Infection Control & Safety",
+        detail: "Standard precautions, hand hygiene, PPE, and fall prevention in every care setting.",
       },
       {
-        module: "State Exam Preparation",
-        outcomes: [
-          "Demonstrate all skills on the Texas Nurse Aide skills checklist",
-          "Pass timed written and oral exam practice sessions",
-          "Complete a mock skills evaluation with instructor feedback",
-        ],
+        title: "Communicating with Patients & Families",
+        detail: "Therapeutic communication, reporting changes in condition, and supporting families with empathy.",
+      },
+      {
+        title: "Vital Signs & Monitoring",
+        detail: "Temperature, pulse, respiration, blood pressure, and accurate intake/output recording.",
+      },
+      {
+        title: "Activities of Daily Living",
+        detail: "Safe transfers, mobility support, feeding, dressing, and grooming assistance.",
+      },
+      {
+        title: "Legal & Ethical Care",
+        detail: "Resident rights, scope of practice, HIPAA, and documentation standards.",
       },
     ],
-    hours: { classroom: 60, lab: 40, externship: 40 },
-    certification: { exam: "Texas Nurse Aide Registry Exam", body: "Texas Health & Human Services", onCampus: true },
+    skills: ["Patient Care", "Vital Signs", "Infection Control", "Safe Transfers", "Daily Living Support", "Patient Communication"],
+    handsOn: ["Vitals", "Transfers", "Hygiene Care", "Infection Control"],
+    studentQuote:
+      "The clinical practice made all the difference — on my first day at work, none of it felt new.",
+    certification: { exam: "Nursing Assistant Certification", body: "Texas Health & Human Services", onCampus: true },
     outlook: {
-      employmentRate: "93%+",
-      salaryRange: "$28,000–$34,000",
-      growth: "8% (faster than average)",
-      environments: ["Skilled nursing facilities", "Hospitals", "Assisted living", "Home health"],
-      source: "U.S. Bureau of Labor Statistics, Nursing Assistants",
+      employmentRate: "95%+",
+      salaryRange: "$35,000 - $50,000",
+      growth: "Above Average",
+      environments: ["Hospitals", "Long-Term Care Facilities", "Nursing Homes", "Rehabilitation Centers", "Home Health Care"],
     },
-    tuition: {
-      note: "Our most affordable program — includes scrubs, skills kit, and the state exam fee.",
-      includes: ["Tuition", "Skills practice kit", "State exam fee", "Clinical placement"],
-    },
-    faqs: [
-      {
-        q: "Is this the fastest program you offer?",
-        a: "It's one of the fastest — most students finish in 8–12 weeks and can sit the state exam shortly after.",
-      },
-      {
-        q: "Do I need a background check?",
-        a: "Yes, a background check and health screening are required before your clinical rotation, consistent with facility requirements statewide.",
-      },
-      {
-        q: "Can this lead to becoming a nurse later?",
-        a: "Many graduates use CNA experience as a stepping stone toward LVN or RN programs — the clinical hours count as valuable direct-care experience.",
-      },
-    ],
     relatedSlugs: ["patient-care-technician", "medical-assistant", "phlebotomy-technician"],
   },
   {
     slug: "phlebotomy-technician",
     name: "Phlebotomy Technician",
+    officialName: "Phlebotomy Training",
     shortName: "Phlebotomy",
     category: "clinical",
     duration: "6–10 weeks",
     durationWeeks: [6, 10],
     format: "hybrid",
     credential: "Certified Phlebotomy Technician (CPT)",
-    blurb: "Master venipuncture and specimen collection — one of the shortest paths to a clinical certification.",
+    blurb: "Critical medical skill focusing on blood collection for diagnostic tests and medical procedures.",
     description: [
-      "Phlebotomy technicians draw blood for testing, transfusions, research, and donations. It's precise, patient-facing work with steady demand across labs and hospitals.",
-      "You'll build technique through supervised practice sticks before moving to a clinical externship at a partner lab or hospital.",
+      "Phlebotomy is a critical skill in the medical field, focusing on drawing blood for diagnostic tests, transfusions, research, and blood donations. Our Phlebotomy Training Program equips you with the knowledge and hands-on experience needed to excel in this growing field.",
     ],
-    heroImage: "/images/programs/phlebotomy-hero.jpg",
+    heroImage: "/images/programs/phlebotomy-card.jpg",
     cardImage: "/images/programs/phlebotomy-card.jpg",
-    curriculum: [
+    objectives: [
+      "Anatomy, physiology, and medical terminology",
+      "Blood collection techniques, venipuncture and capillary puncture",
+      "Patient care, safety, and infection control",
+      "Specimen handling and processing",
+      "Professional ethics and standards",
+      "Certification exam preparation",
+    ],
+    modules: [
       {
-        module: "Venipuncture Technique",
-        outcomes: [
-          "Perform venipuncture using vacuum-tube and butterfly techniques",
-          "Select correct order of draw and collection tubes for requested tests",
-          "Manage patient anxiety and safely handle difficult draws",
-        ],
+        title: "Anatomy, Physiology & Terminology",
+        detail: "The circulatory system, vein selection, and the medical vocabulary used on every lab requisition.",
       },
       {
-        module: "Specimen Handling & Safety",
-        outcomes: [
-          "Label, process, and route specimens per lab protocol",
-          "Perform capillary and dermal puncture for pediatric and geriatric patients",
-          "Follow OSHA bloodborne pathogen standards and sharps disposal procedures",
-        ],
+        title: "Venipuncture & Capillary Puncture",
+        detail: "Vacuum-tube, butterfly, and dermal techniques, plus correct order of draw.",
       },
       {
-        module: "Clinical Externship",
-        outcomes: [
-          "Complete a minimum number of successful supervised live draws",
-          "Operate within a real lab or hospital collection workflow",
-          "Communicate professionally with patients and lab staff",
-        ],
+        title: "Patient Care, Safety & Infection Control",
+        detail: "Patient identification, managing anxious patients, and OSHA bloodborne-pathogen standards.",
+      },
+      {
+        title: "Specimen Handling & Processing",
+        detail: "Labeling, centrifuging, and routing specimens so results come back accurate.",
+      },
+      {
+        title: "Professional Ethics & Standards",
+        detail: "Scope of practice, patient privacy, and professional conduct in lab settings.",
+      },
+      {
+        title: "Certification Exam Preparation",
+        detail: "Structured review and timed practice exams ahead of your certification test.",
       },
     ],
-    hours: { classroom: 40, lab: 40, externship: 40 },
+    skills: ["Venipuncture", "Capillary Puncture", "Order of Draw", "Specimen Handling", "Infection Control", "Patient Safety"],
+    handsOn: ["Venipuncture", "Order of Draw", "Specimen Processing", "Safety"],
+    studentQuote: "By my externship I'd already done enough practice draws that the real ones felt routine.",
     certification: { exam: "Certified Phlebotomy Technician (CPT)", body: "AMCA", onCampus: true },
     outlook: {
-      employmentRate: "92%+",
-      salaryRange: "$31,000–$38,000",
-      growth: "8% (faster than average)",
-      environments: ["Hospital labs", "Diagnostic labs", "Blood donation centers", "Physician offices"],
-      source: "U.S. Bureau of Labor Statistics, Phlebotomists",
+      employmentRate: "95%+",
+      salaryRange: "$35,000 - $50,000",
+      growth: "Above Average",
+      environments: ["Hospitals", "Diagnostic Labs", "Blood Donation Centers", "Physician Offices", "Research Facilities"],
     },
-    tuition: {
-      note: "Includes practice draw kits and one CPT exam attempt.",
-      includes: ["Tuition", "Practice draw kit", "CPT exam fee", "Externship placement"],
-    },
-    faqs: [
-      {
-        q: "How many live draws will I do before graduating?",
-        a: "You'll complete a set minimum of successful supervised draws during lab and externship — your advisor tracks this with you personally.",
-      },
-      {
-        q: "Is this program available in the evenings?",
-        a: "Yes, hybrid day and evening cohorts are offered depending on the current schedule — check upcoming start dates for specifics.",
-      },
-    ],
     relatedSlugs: ["ekg-technician", "medical-assistant", "patient-care-technician"],
   },
   {
     slug: "ekg-technician",
     name: "EKG Technician",
+    officialName: "Electrocardiogram (EKG) Technician",
     shortName: "EKG Technician",
     category: "clinical",
     duration: "8–12 weeks",
     durationWeeks: [8, 12],
     format: "hybrid",
-    credential: "Certified EKG Technician (CET)",
-    blurb: "Learn to perform and read electrocardiograms in a fast, in-demand cardiac-care specialty.",
+    credential: "EKG Technician Certification",
+    blurb: "Essential healthcare team members responsible for conducting diagnostic tests that monitor heart function.",
     description: [
-      "EKG technicians capture the heart's electrical activity for physicians to diagnose cardiac conditions — a focused, in-demand specialty in hospitals and cardiology clinics.",
-      "Training covers lead placement, rhythm recognition, and stress-test assistance, backed by hands-on lab practice before your externship.",
+      "EKG Technicians are essential members of the healthcare team, responsible for conducting diagnostic tests that monitor heart function. They ensure accurate readings, assist in detecting cardiac conditions, and support physicians in delivering timely, life-saving care.",
     ],
-    heroImage: "/images/programs/ekg-technician-hero.jpg",
+    heroImage: "/images/programs/ekg-technician-card.jpg",
     cardImage: "/images/programs/ekg-technician-card.jpg",
-    curriculum: [
+    objectives: [
+      "Anatomy and physiology of the heart",
+      "EKG equipment operation and maintenance",
+      "Patient preparation and communication",
+      "Reading and interpreting EKG results",
+      "Identifying arrhythmias and other cardiac conditions",
+    ],
+    modules: [
       {
-        module: "Cardiac Fundamentals",
-        outcomes: [
-          "Explain the heart's electrical conduction system and normal rhythm patterns",
-          "Correctly place 12-lead EKG electrodes on adult patients",
-          "Identify common arrhythmias and artifacts on an EKG strip",
-        ],
+        title: "Anatomy & Physiology of the Heart",
+        detail: "Cardiac structure and the electrical conduction system behind every waveform.",
       },
       {
-        module: "Testing Procedures",
-        outcomes: [
-          "Prepare patients for and assist with cardiac stress tests",
-          "Operate Holter and event monitor equipment",
-          "Recognize when a reading requires immediate physician notification",
-        ],
+        title: "EKG Equipment Operation & Maintenance",
+        detail: "12-lead setup, Holter and event monitors, calibration, and troubleshooting artifact.",
       },
       {
-        module: "Clinical Practice",
-        outcomes: [
-          "Perform EKGs independently in a supervised clinical setting",
-          "Maintain accurate testing documentation for the patient chart",
-          "Communicate results appropriately within scope of practice",
-        ],
+        title: "Patient Preparation & Communication",
+        detail: "Skin prep, accurate lead placement, and keeping patients calm and still during the test.",
+      },
+      {
+        title: "Reading & Interpreting EKG Results",
+        detail: "Measuring intervals, calculating heart rate, and recognizing a normal sinus rhythm.",
+      },
+      {
+        title: "Arrhythmias & Cardiac Conditions",
+        detail: "Spotting common arrhythmias and knowing when a strip needs immediate physician attention.",
       },
     ],
-    hours: { classroom: 80, lab: 60, externship: 60 },
-    certification: { exam: "Certified EKG Technician (CET)", body: "AMCA", onCampus: true },
+    skills: ["12-Lead Placement", "Rhythm Recognition", "Holter Monitoring", "Cardiac Anatomy", "Patient Prep", "Arrhythmia ID"],
+    handsOn: ["12-Lead EKG", "Holter Monitors", "Rhythm Strips", "Patient Prep"],
+    studentQuote: "Reading rhythm strips went from impossible to second nature — the lab practice was relentless in the best way.",
+    certification: { exam: "EKG Technician Certification", body: "AMCA", onCampus: true },
     outlook: {
-      employmentRate: "91%+",
-      salaryRange: "$32,000–$40,000",
-      growth: "5% (average)",
-      environments: ["Hospital cardiology units", "Cardiology clinics", "Diagnostic imaging centers"],
-      source: "U.S. Bureau of Labor Statistics, Cardiovascular Technologists and Technicians",
+      employmentRate: "95%+",
+      salaryRange: "$35,000 - $50,000",
+      growth: "Above Average",
+      environments: ["Hospitals", "Clinics", "Diagnostic Labs", "Cardiology Offices"],
     },
-    faqs: [
-      {
-        q: "Is EKG training combined with any other credential?",
-        a: "Some students pair this with Patient Care Technician training for a broader clinical skill set — ask your advisor about combined scheduling.",
-      },
-      {
-        q: "Will I learn to interpret EKGs like a cardiologist?",
-        a: "You'll learn to recognize common patterns and flag abnormal readings for physician review — full diagnostic interpretation stays within the physician's scope.",
-      },
-    ],
     relatedSlugs: ["patient-care-technician", "medical-assistant", "phlebotomy-technician"],
   },
   {
     slug: "patient-care-technician",
     name: "Patient Care Technician",
+    officialName: "Patient Care Technician Certification (PCTC)",
     shortName: "PCT",
     category: "clinical",
     duration: "12–16 weeks",
     durationWeeks: [12, 16],
     format: "hybrid",
-    credential: "Certified Patient Care Technician (CPCT/A)",
-    blurb: "A broad clinical skill set combining nursing assistant, phlebotomy, and EKG basics in one credential.",
+    credential: "Patient Care Technician Certification (PCTC)",
+    blurb: "Deliver compassionate care under supervision of nurses and physicians.",
     description: [
-      "Patient Care Technicians are cross-trained for direct patient care plus basic diagnostic support — a versatile role hospitals rely on across units.",
-      "The program layers CNA-level care skills with phlebotomy and EKG basics, giving you a broader range of duties (and job options) than a single-skill certificate.",
+      "Patient Care Technicians work under the supervision of nurses and physicians, delivering compassionate care and supporting patients with daily activities, vital sign monitoring, and basic medical procedures. They play a crucial role in ensuring quality care and comfort.",
     ],
-    heroImage: "/images/programs/patient-care-technician-hero.jpg",
-    cardImage: "/images/programs/patient-care-technician-card.jpg",
-    curriculum: [
+    heroImage: "/images/programs/patient-care-technician.jpg",
+    cardImage: "/images/programs/patient-care-technician.jpg",
+    objectives: [
+      "Basic nursing and patient care techniques",
+      "Phlebotomy and specimen collection",
+      "Electrocardiogram (EKG) monitoring",
+      "Infection control and safety protocols",
+      "Patient hygiene and mobility assistance",
+      "Effective communication with patients and families",
+    ],
+    modules: [
       {
-        module: "Direct Patient Care",
-        outcomes: [
-          "Assist patients with daily living activities and mobility",
-          "Take and record vital signs across patient age groups",
-          "Recognize and escalate signs of patient distress",
-        ],
+        title: "Basic Nursing & Patient Care",
+        detail: "Core bedside care, vital signs, and supporting nurses through a hospital shift.",
       },
       {
-        module: "Diagnostic Support Skills",
-        outcomes: [
-          "Perform basic venipuncture and specimen collection",
-          "Apply and read a standard 12-lead EKG",
-          "Assist with wound care and dressing changes under supervision",
-        ],
+        title: "Phlebotomy & Specimen Collection",
+        detail: "Venipuncture, capillary sticks, and correct specimen labeling and handling.",
       },
       {
-        module: "Clinical Externship",
-        outcomes: [
-          "Rotate through hospital or long-term care units under supervision",
-          "Document care accurately in patient records",
-          "Coordinate with nursing staff as part of a care team",
-        ],
+        title: "EKG Monitoring",
+        detail: "Lead placement, running 12-lead EKGs, and recognizing strips that need escalation.",
+      },
+      {
+        title: "Infection Control & Safety",
+        detail: "Isolation precautions, PPE, sharps safety, and fall prevention.",
+      },
+      {
+        title: "Hygiene & Mobility Assistance",
+        detail: "Bathing, repositioning, safe transfers, and ambulation support.",
+      },
+      {
+        title: "Communicating with Patients & Families",
+        detail: "Clear, compassionate communication and accurate reporting to the care team.",
       },
     ],
-    hours: { classroom: 160, lab: 100, externship: 100 },
-    certification: { exam: "Certified Patient Care Technician (CPCT/A)", body: "AMCA", onCampus: true },
+    skills: ["Patient Care", "Phlebotomy", "EKG Monitoring", "Vital Signs", "Mobility Assistance", "Infection Control"],
+    handsOn: ["Phlebotomy", "EKG", "Vitals", "Patient Mobility"],
+    studentQuote: "Learning phlebotomy, EKG, and patient care in one program made me the most versatile tech on my unit.",
+    certification: { exam: "Patient Care Technician Certification (PCTC)", body: "AMCA", onCampus: true },
     outlook: {
-      employmentRate: "94%+",
-      salaryRange: "$30,000–$37,000",
-      growth: "9% (faster than average)",
-      environments: ["Hospitals", "Skilled nursing facilities", "Rehabilitation centers"],
-      source: "U.S. Bureau of Labor Statistics, Nursing Assistants and Orderlies",
+      employmentRate: "95%+",
+      salaryRange: "$35,000 - $50,000",
+      growth: "Above Average",
+      environments: ["Hospitals", "Long-Term Care Facilities", "Rehabilitation Centers", "Dialysis Centers", "Home Health Care"],
     },
-    faqs: [
-      {
-        q: "How is this different from the CNA program?",
-        a: "PCT adds phlebotomy and EKG skills on top of nursing-assistant-level care, which opens up more roles and typically a higher starting wage.",
-      },
-      {
-        q: "Can I start as a CNA and upgrade to PCT later?",
-        a: "Yes — many students complete the CNA program first, then return for the PCT bridge coursework once they're working.",
-      },
-    ],
     relatedSlugs: ["nursing-assistant", "phlebotomy-technician", "ekg-technician"],
   },
   {
     slug: "mri-technician",
     name: "MRI Technician",
+    officialName: "Magnetic Resonance Imaging (MRI) Program",
     shortName: "MRI Tech",
     category: "clinical",
     duration: "16–24 weeks",
     durationWeeks: [16, 24],
     format: "hybrid",
-    credential: "MRI Technologist Certificate",
-    blurb: "Our longest and most technical program — hands-on imaging training for a high-earning specialty.",
+    credential: "ARRT MRI Certification Prep",
+    blurb: "Join the cutting edge of diagnostic imaging with comprehensive MRI technology training.",
     description: [
-      "MRI technicians operate advanced imaging equipment to help physicians diagnose everything from joint injuries to neurological conditions.",
-      "Because this is an equipment-intensive specialty, the program runs longer than our other certificates and includes extended lab time on imaging simulators before a clinical externship.",
+      "Join the cutting edge of diagnostic imaging with our Magnetic Resonance Imaging (MRI) Program. Whether you're launching your career or expanding your skills, this program prepares you with the technical knowledge and hands-on experience to operate MRI equipment, capture high-quality images, and support accurate diagnoses in today's advanced medical environments.",
     ],
-    heroImage: "/images/programs/mri-technician-hero.jpg",
-    cardImage: "/images/programs/mri-technician-card.jpg",
-    curriculum: [
+    heroImage: "/images/story/step-3.jpg",
+    cardImage: "/images/story/step-3.jpg",
+    objectives: [
+      "MRI Physics and Instrumentation",
+      "Cross-Sectional Anatomy",
+      "Patient Care and Safety",
+      "Clinical Competency in MRI Protocols",
+      "Image quality and optimization",
+      "ARRT MRI certification preparation",
+    ],
+    modules: [
       {
-        module: "Imaging Fundamentals",
-        outcomes: [
-          "Explain magnetic resonance physics and safety zones",
-          "Screen patients for MRI contraindications (implants, devices)",
-          "Position patients correctly for common scan protocols",
-        ],
+        title: "MRI Physics & Instrumentation",
+        detail: "Magnetic fields, RF pulses, and how the scanner turns signal into an image.",
       },
       {
-        module: "Scanning Procedures",
-        outcomes: [
-          "Operate MRI console software to run standard protocols",
-          "Recognize and correct common imaging artifacts",
-          "Administer and monitor patients receiving contrast agents under supervision",
-        ],
+        title: "Cross-Sectional Anatomy",
+        detail: "Recognizing anatomy across axial, sagittal, and coronal planes.",
       },
       {
-        module: "Clinical Externship",
-        outcomes: [
-          "Complete supervised scans across multiple body regions",
-          "Maintain imaging documentation to facility standards",
-          "Work within a radiology department team workflow",
-        ],
+        title: "Patient Care & Safety",
+        detail: "MRI screening, zone safety, implants and contraindications, and patient comfort in the bore.",
+      },
+      {
+        title: "Clinical Competency in MRI Protocols",
+        detail: "Running standard protocols for brain, spine, and musculoskeletal exams.",
+      },
+      {
+        title: "Image Quality & Optimization",
+        detail: "Adjusting parameters, reducing artifacts, and producing diagnostic-quality images.",
+      },
+      {
+        title: "ARRT MRI Certification Preparation",
+        detail: "Structured review and practice exams aligned to the ARRT MRI content outline.",
       },
     ],
-    hours: { classroom: 220, lab: 180, externship: 200 },
-    certification: { exam: "MRI Technologist Certification", body: "ARMRIT", onCampus: true },
+    skills: ["MRI Physics", "Cross-Sectional Anatomy", "MRI Safety", "Scan Protocols", "Image Optimization", "Patient Screening"],
+    handsOn: ["MRI Protocols", "Safety Screening", "Patient Positioning", "Image Review"],
+    studentQuote: "I was expanding from another healthcare role, and the physics finally clicked once I was running protocols myself.",
+    certification: { exam: "ARRT MRI Certification", body: "ARRT", onCampus: false },
     outlook: {
-      employmentRate: "90%+",
-      salaryRange: "$48,000–$62,000",
-      growth: "6% (faster than average)",
-      environments: ["Hospital imaging departments", "Outpatient imaging centers", "Orthopedic practices"],
-      source: "U.S. Bureau of Labor Statistics, Radiologic and MRI Technologists",
+      employmentRate: "95%+",
+      salaryRange: "$35,000 - $50,000",
+      growth: "Above Average",
+      environments: ["Hospitals", "Outpatient Imaging Centers", "Research Facilities", "Diagnostic Centers", "Academic Medical Centers"],
     },
-    tuition: {
-      note: "Our highest-tuition program given equipment and lab hours — ask your advisor for a full cost sheet and financing options.",
-      includes: ["Tuition", "Simulator lab access", "Certification exam fee", "Externship placement"],
-    },
-    faqs: [
-      {
-        q: "Do I need a prior radiology background?",
-        a: "No prior imaging experience is required, though comfort with technology and attention to detail help.",
-      },
-      {
-        q: "Why is this program longer than the others?",
-        a: "MRI is equipment-intensive — the extra weeks give you enough simulator and clinical time to scan confidently and safely before certification.",
-      },
-    ],
     relatedSlugs: ["patient-care-technician", "medical-assistant", "ekg-technician"],
   },
   {
     slug: "medical-administrative-assistant",
     name: "Medical Administrative Assistant",
+    officialName: "Medical Administrative Assistant Certification (MAAC)",
     shortName: "MAAC",
     category: "administrative",
     duration: "8–16 weeks",
     durationWeeks: [8, 16],
     format: "hybrid",
-    credential: "Certified Medical Administrative Assistant (CMAA)",
-    blurb: "Run the front office of a clinic — scheduling, records, insurance, and patient communication.",
+    credential: "Medical Administrative Assistant Certification (MAAC)",
+    blurb: "The backbone of healthcare facilities, managing essential tasks like patient scheduling and record keeping.",
     description: [
-      "Every clinic depends on the front office to keep patients moving and paperwork accurate. This program prepares you for scheduling, records, billing basics, and patient-facing communication.",
-      "You'll train on real practice-management and EHR software before an administrative externship at a partner office.",
+      "Medical Administrative Assistants are the backbone of healthcare facilities, managing essential tasks like patient scheduling, record keeping, and insurance claims. They ensure smooth office operations, allowing clinicians to focus on patient care.",
     ],
-    heroImage: "/images/programs/medical-administrative-assistant-hero.jpg",
-    cardImage: "/images/programs/medical-administrative-assistant-card.jpg",
-    curriculum: [
+    heroImage: "/images/programs/medical-administrative-assistant.jpg",
+    cardImage: "/images/programs/medical-administrative-assistant.jpg",
+    objectives: [
+      "Medical office procedures and best practices",
+      "Patient communication and customer service",
+      "Electronic health records (EHR) management",
+      "Medical terminology and basic coding",
+      "Insurance and billing processes",
+      "Professionalism and ethical standards in healthcare",
+    ],
+    modules: [
       {
-        module: "Front Office Operations",
-        outcomes: [
-          "Schedule and manage a multi-provider patient calendar",
-          "Check patients in and out, including insurance verification",
-          "Handle patient phone and in-person communication professionally",
-        ],
+        title: "Medical Office Procedures",
+        detail: "Scheduling, patient check-in and check-out, and keeping a busy front office running smoothly.",
       },
       {
-        module: "Records & Compliance",
-        outcomes: [
-          "Maintain patient records within an EHR system",
-          "Apply HIPAA privacy and release-of-information procedures",
-          "Prepare and route referral and authorization paperwork",
-        ],
+        title: "Patient Communication & Service",
+        detail: "Phone etiquette, handling difficult conversations, and making every patient feel looked after.",
       },
       {
-        module: "Billing Basics",
-        outcomes: [
-          "Enter basic CPT/ICD-10 codes for common visit types",
-          "Process patient payments and explain benefit statements",
-          "Submit and track simple insurance claims",
-        ],
+        title: "Electronic Health Records (EHR)",
+        detail: "Navigating EHR systems, updating charts, and protecting patient data under HIPAA.",
+      },
+      {
+        title: "Medical Terminology & Basic Coding",
+        detail: "The vocabulary of medicine and an introduction to ICD-10 and CPT codes.",
+      },
+      {
+        title: "Insurance & Billing Processes",
+        detail: "Verifying coverage, submitting claims, and following up on patient balances.",
+      },
+      {
+        title: "Professionalism & Ethics",
+        detail: "Confidentiality, workplace conduct, and ethical standards in a healthcare office.",
       },
     ],
-    hours: { classroom: 140, lab: 60, externship: 80 },
-    certification: { exam: "Certified Medical Administrative Assistant (CMAA)", body: "AMCA", onCampus: true },
+    skills: ["Scheduling", "EHR Systems", "Insurance Verification", "Medical Terminology", "Billing Basics", "Front-Office Service"],
+    handsOn: ["EHR Software", "Scheduling", "Insurance Claims", "Patient Intake"],
+    handsOnIntro:
+      "Every skill in this program is practiced in the same EHR, scheduling, and claims software used in real medical offices — so your first day at the front desk already feels familiar.",
+    studentQuote: "I wanted a healthcare career without clinical work — now I run the front desk of a busy specialty practice.",
+    certification: { exam: "Medical Administrative Assistant Certification (MAAC)", body: "AMCA", onCampus: true },
     outlook: {
-      employmentRate: "93%+",
-      salaryRange: "$31,000–$39,000",
-      growth: "7% (faster than average)",
-      environments: ["Physician offices", "Specialty clinics", "Outpatient centers", "Billing departments"],
-      source: "U.S. Bureau of Labor Statistics, Medical Secretaries and Administrative Assistants",
+      employmentRate: "95%+",
+      salaryRange: "$35,000 - $50,000",
+      growth: "Above Average",
+      environments: ["Hospitals", "Private Practices", "Outpatient Clinics", "Specialty Offices", "Insurance Companies"],
     },
-    faqs: [
-      {
-        q: "Is this a clinical or office-based program?",
-        a: "Office-based — you won't perform hands-on clinical procedures, though you'll learn the medical terminology and workflow of a clinic.",
-      },
-      {
-        q: "What software will I learn?",
-        a: "You'll practice on a standard EHR/practice-management platform representative of what most Dallas–Fort Worth clinics use.",
-      },
-    ],
     relatedSlugs: ["medical-billing-coding", "medical-assistant", "mental-health-technician"],
   },
   {
     slug: "medical-billing-coding",
     name: "Medical Billing & Coding",
+    officialName: "Medical Billing and Coding",
     shortName: "Billing & Coding",
     category: "administrative",
     duration: "12–20 weeks",
     durationWeeks: [12, 20],
     format: "flexible",
-    credential: "Certified Billing & Coding Specialist (CBCS)",
-    blurb: "Translate patient charts into billing codes — a remote-friendly role with flexible study options.",
+    credential: "CPC & CBCS Certification Prep",
+    blurb: "Vital role in healthcare ensuring accurate documentation, proper billing, and seamless insurance processing.",
     description: [
-      "Medical coders and billers translate clinical documentation into the codes insurers and Medicare use to process claims — detail-oriented work that's often remote-friendly.",
-      "This program is offered online, hybrid, or in-person so you can choose the pace and setting that fits your schedule.",
+      "Step into a vital role in the healthcare system with our comprehensive Medical Billing and Coding Program. Medical Billing and Coding professionals play a vital role in the healthcare system ensuring accurate documentation, proper billing, and seamless insurance processing.",
     ],
-    heroImage: "/images/programs/medical-billing-coding-hero.jpg",
-    cardImage: "/images/programs/medical-billing-coding-card.jpg",
-    curriculum: [
+    heroImage: "/images/programs/medical-billing-coding.jpg",
+    cardImage: "/images/programs/medical-billing-coding.jpg",
+    objectives: [
+      "Medical terminology, anatomy, coding systems",
+      "ICD-10, CPT, HCPCS coding systems",
+      "Electronic health records (EHRs)",
+      "Healthcare regulations",
+      "Real-world billing and coding software experience",
+      "CPC and CBCS certification preparation",
+    ],
+    modules: [
       {
-        module: "Coding Systems",
-        outcomes: [
-          "Assign accurate ICD-10-CM diagnosis codes from chart documentation",
-          "Assign CPT and HCPCS procedure codes for common visit types",
-          "Apply coding guidelines and modifiers correctly",
-        ],
+        title: "Terminology, Anatomy & Coding Systems",
+        detail: "The medical language and body systems every code is built on.",
       },
       {
-        module: "Billing & Claims",
-        outcomes: [
-          "Prepare and submit clean insurance claims",
-          "Post payments and reconcile explanation-of-benefits statements",
-          "Identify and appeal common claim denials",
-        ],
+        title: "ICD-10, CPT & HCPCS",
+        detail: "Assigning diagnosis, procedure, and supply codes accurately from real documentation.",
       },
       {
-        module: "Compliance",
-        outcomes: [
-          "Apply HIPAA and fraud/abuse compliance standards to billing work",
-          "Audit a sample chart for coding accuracy",
-        ],
+        title: "Electronic Health Records",
+        detail: "Pulling the right information from EHRs and keeping records audit-ready.",
+      },
+      {
+        title: "Healthcare Regulations",
+        detail: "HIPAA, compliance, and the payer rules that decide whether a claim gets paid.",
+      },
+      {
+        title: "Billing & Coding Software",
+        detail: "Hands-on practice with the claim submission and practice-management tools employers use.",
+      },
+      {
+        title: "CPC & CBCS Certification Preparation",
+        detail: "Structured review and timed practice exams for the CPC and CBCS credentials.",
       },
     ],
-    hours: { classroom: 160, lab: 40, externship: 60 },
-    certification: { exam: "Certified Billing & Coding Specialist (CBCS)", body: "AMCA", onCampus: true },
+    skills: ["ICD-10", "CPT", "HCPCS", "Claims Submission", "EHR Systems", "HIPAA Compliance"],
+    handsOn: ["ICD-10", "CPT", "Claims Software", "EHR"],
+    handsOnIntro:
+      "Every code set in this program is practiced on real billing and coding software with real-world case documentation — so by exam day, the workflow already feels familiar.",
+    studentQuote: "Taking the program online around my job meant I didn't have to choose between a paycheck and a new career.",
+    certification: { exam: "CPC & CBCS", body: "AAPC and NHA", onCampus: false },
     outlook: {
-      employmentRate: "92%+",
-      salaryRange: "$36,000–$46,000",
-      growth: "8% (faster than average)",
-      environments: ["Hospital billing departments", "Physician offices", "Remote/work-from-home", "Insurance companies"],
-      source: "U.S. Bureau of Labor Statistics, Medical Records Specialists",
+      employmentRate: "95%+",
+      salaryRange: "$35,000 - $50,000",
+      growth: "Above Average",
+      environments: [
+        "Hospitals",
+        "Physician Offices",
+        "Outpatient Clinics",
+        "Insurance Companies",
+        "Long-Term Care Facilities",
+        "Government Agencies",
+      ],
     },
-    faqs: [
-      {
-        q: "Can I complete this program fully online?",
-        a: "Yes — the online track covers all coursework remotely; hybrid and in-person options are also available if you prefer classroom time.",
-      },
-      {
-        q: "Can I work remotely after certification?",
-        a: "Many billing and coding roles are remote-friendly, especially with 1–2 years of experience; your first role is often on-site while you build that track record.",
-      },
-    ],
     relatedSlugs: ["medical-administrative-assistant", "medical-assistant", "mental-health-technician"],
   },
   {
     slug: "mental-health-technician",
     name: "Mental Health Technician",
+    officialName: "Mental Health Technician Certification (MHTC)",
     shortName: "MHTC",
     category: "specialized",
     duration: "8–16 weeks",
     durationWeeks: [8, 16],
     format: "hybrid",
-    credential: "Certified Behavioral Health Technician (CBHT)",
-    blurb: "Support patients in behavioral health and substance-use treatment settings.",
+    credential: "Mental Health Technician Certification (MHTC)",
+    blurb: "Work alongside mental health professionals providing compassionate support and promoting safe recovery environments.",
     description: [
-      "Mental Health Technicians support patients through crisis stabilization, therapeutic activities, and daily care in behavioral health and substance-use treatment settings.",
-      "Training emphasizes de-escalation, documentation, and trauma-informed care alongside core patient-care skills.",
+      "Mental Health Technicians work alongside psychiatrists, psychologists, and social workers, providing compassionate support, monitoring patient behavior, and promoting a safe environment for recovery.",
     ],
-    heroImage: "/images/programs/mental-health-technician-hero.jpg",
-    cardImage: "/images/programs/mental-health-technician-card.jpg",
-    curriculum: [
+    heroImage: "/images/programs/mental-health-technician.jpg",
+    cardImage: "/images/programs/mental-health-technician.jpg",
+    objectives: [
+      "Fundamentals of mental health and psychiatric disorders",
+      "Crisis prevention and intervention techniques",
+      "Therapeutic communication and patient interaction",
+      "Basic counseling skills and supportive therapies",
+      "Ethical and legal considerations in mental health",
+      "Documentation and record-keeping",
+    ],
+    modules: [
       {
-        module: "Behavioral Health Fundamentals",
-        outcomes: [
-          "Describe common psychiatric conditions and treatment approaches",
-          "Apply trauma-informed care principles in patient interactions",
-          "Recognize signs of crisis and apply de-escalation techniques",
-        ],
+        title: "Mental Health & Psychiatric Disorders",
+        detail: "Common diagnoses, symptoms, and how treatment teams approach recovery.",
       },
       {
-        module: "Patient Support Skills",
-        outcomes: [
-          "Lead structured therapeutic and psychoeducational group activities",
-          "Monitor and document patient behavior and safety checks",
-          "Support activities of daily living for patients in treatment",
-        ],
+        title: "Crisis Prevention & Intervention",
+        detail: "De-escalation, recognizing warning signs, and keeping patients and staff safe.",
       },
       {
-        module: "Clinical Externship",
-        outcomes: [
-          "Rotate on a behavioral health unit under clinical supervision",
-          "Complete accurate shift documentation within scope of practice",
-        ],
+        title: "Therapeutic Communication",
+        detail: "Active listening, building trust, and interacting with patients in distress.",
+      },
+      {
+        title: "Counseling Skills & Supportive Therapies",
+        detail: "Supporting group sessions, activities, and the therapeutic plan set by clinicians.",
+      },
+      {
+        title: "Ethical & Legal Considerations",
+        detail: "Patient rights, confidentiality, and the legal boundaries of the role.",
+      },
+      {
+        title: "Documentation & Record-Keeping",
+        detail: "Behavior observations, incident reports, and accurate charting.",
       },
     ],
-    hours: { classroom: 140, lab: 60, externship: 80 },
-    certification: { exam: "Certified Behavioral Health Technician (CBHT)", body: "AMCA", onCampus: true },
+    skills: ["Crisis Intervention", "De-escalation", "Therapeutic Communication", "Behavior Monitoring", "Patient Advocacy", "Documentation"],
+    handsOn: ["De-escalation", "Role-Play Scenarios", "Group Support", "Charting"],
+    handsOnIntro:
+      "Every skill in this program is practiced through guided role-play and realistic crisis scenarios with instructor feedback — so by your first shift, de-escalation already feels familiar.",
+    studentQuote: "The crisis-intervention practice gave me the calm I needed for my first shifts on a behavioral health unit.",
+    certification: { exam: "Mental Health Technician Certification (MHTC)", body: "AMCA", onCampus: true },
     outlook: {
-      employmentRate: "90%+",
-      salaryRange: "$30,000–$37,000",
-      growth: "10% (faster than average)",
-      environments: ["Psychiatric hospitals", "Substance-use treatment centers", "Residential treatment facilities"],
-      source: "U.S. Bureau of Labor Statistics, Psychiatric Technicians",
+      employmentRate: "95%+",
+      salaryRange: "$35,000 - $50,000",
+      growth: "Above Average",
+      environments: [
+        "Behavioral Health Centers",
+        "Psychiatric Hospitals",
+        "Residential Treatment Facilities",
+        "Substance Abuse Treatment Centers",
+        "Community Mental Health Programs",
+      ],
     },
-    faqs: [
-      {
-        q: "Is prior mental health experience required?",
-        a: "No — the program is designed for career-changers with no prior behavioral health background.",
-      },
-      {
-        q: "Is this program emotionally demanding?",
-        a: "It can be — instructors spend real time on de-escalation, boundaries, and self-care so you're prepared for the realities of the work.",
-      },
-    ],
     relatedSlugs: ["patient-care-technician", "medical-administrative-assistant", "nursing-assistant"],
   },
   {
     slug: "orthopedic-casting",
     name: "Orthopedic Casting",
+    officialName: "Orthopedic Casting Program for Medical Assistants",
     shortName: "Orthopedic Casting",
     category: "specialized",
     duration: "2 weeks",
     durationWeeks: [2, 2],
     format: "in-person",
     credential: "Orthopedic Casting Certificate",
-    blurb: "Our shortest program — intensive, hands-on training in cast and splint application.",
+    blurb: "Specialized training in orthopedic cast application, maintenance, and removal for medical assistants.",
     description: [
-      "This intensive two-week, in-person program teaches cast and splint application for fracture care — a focused technical skill used in orthopedic clinics, urgent care, and emergency departments.",
-      "Because it's entirely hands-on, every session is in-person in our lab working with real casting materials under instructor supervision.",
+      "This specialized program trains Medical Assistants in the application, maintenance, and removal of orthopedic casts and splints. Gain hands-on skills to support orthopedic teams in clinical and emergency settings.",
     ],
-    heroImage: "/images/programs/orthopedic-casting-hero.jpg",
-    cardImage: "/images/programs/orthopedic-casting-card.jpg",
-    curriculum: [
+    heroImage: "/images/programs/orthopedic-casting.jpg",
+    cardImage: "/images/programs/orthopedic-casting.jpg",
+    objectives: [
+      "Intro to orthopedic conditions and anatomy",
+      "Upper & lower extremity casting techniques",
+      "Specialized casts (hip, shoulder spica)",
+      "Cast removal using saws safely",
+      "Tools & materials training",
+      "Clinical scenarios & certification",
+    ],
+    modules: [
       {
-        module: "Casting & Splinting",
-        outcomes: [
-          "Apply short-arm, long-arm, short-leg, and long-leg casts correctly",
-          "Apply common splints for acute fracture stabilization",
-          "Safely remove casts using a cast saw",
-        ],
+        title: "Orthopedic Conditions & Anatomy",
+        detail: "Fractures, sprains, and the musculoskeletal anatomy behind every cast.",
       },
       {
-        module: "Patient Safety",
-        outcomes: [
-          "Recognize signs of compartment syndrome and circulatory compromise",
-          "Educate patients on cast care and warning signs at home",
-        ],
+        title: "Upper & Lower Extremity Casting",
+        detail: "Short- and long-arm and leg casts, splints, and correct padding and positioning.",
+      },
+      {
+        title: "Specialized Casts",
+        detail: "Hip and shoulder spica casts and other complex applications.",
+      },
+      {
+        title: "Safe Cast Removal",
+        detail: "Using the cast saw safely, protecting skin, and patient reassurance.",
+      },
+      {
+        title: "Tools & Materials",
+        detail: "Plaster versus fiberglass, padding, and choosing the right materials for each case.",
+      },
+      {
+        title: "Clinical Scenarios & Certification",
+        detail: "Real-world casting scenarios assessed by instructors, leading to certification.",
       },
     ],
-    hours: { classroom: 20, lab: 40, externship: 0 },
+    skills: ["Cast Application", "Splinting", "Spica Casts", "Cast Removal", "Musculoskeletal Anatomy", "Patient Education"],
+    handsOn: ["Fiberglass Casts", "Splints", "Cast Saw", "Spica Casts"],
+    studentQuote: "Two weeks, and I went back to my clinic able to handle casting that we used to refer out.",
     certification: { exam: "Orthopedic Casting Certificate Exam", body: "NAOT", onCampus: false },
     outlook: {
-      employmentRate: "88%+",
-      salaryRange: "$32,000–$40,000",
-      growth: "5% (average)",
-      environments: ["Orthopedic clinics", "Urgent care", "Emergency departments"],
-      source: "U.S. Bureau of Labor Statistics, Orthopedic Technologists",
+      employmentRate: "95%+",
+      salaryRange: "$35,000 - $50,000",
+      growth: "Above Average",
+      environments: [
+        "Orthopedic Clinics",
+        "Emergency Departments",
+        "Urgent Care Centers",
+        "Sports Medicine Facilities",
+        "Rehabilitation Centers",
+      ],
     },
-    faqs: [
-      {
-        q: "Is there an externship for this program?",
-        a: "No — because it's a focused two-week technical skill, all training happens in our lab rather than through an external clinical rotation.",
-      },
-      {
-        q: "Do I need a healthcare background to enroll?",
-        a: "It helps to have some clinical exposure (such as a CNA or MA background), though it isn't required — many students take this alongside another program.",
-      },
-    ],
-    relatedSlugs: ["patient-care-technician", "ekg-technician", "medical-assistant"],
+    relatedSlugs: ["medical-assistant", "physical-therapy-aide", "patient-care-technician"],
   },
   {
     slug: "physical-therapy-aide",
     name: "Physical Therapy Aide",
+    officialName: "Physical Therapy Technician/Aide Certification (PTTC)",
     shortName: "PT Aide",
     category: "clinical",
     duration: "8–12 weeks",
     durationWeeks: [8, 12],
     format: "hybrid",
-    credential: "Physical Therapy Aide Certificate",
-    blurb: "Support licensed therapists with patient setup, equipment, and rehab exercises.",
+    credential: "Physical Therapy Technician/Aide Certification (PTTC)",
+    blurb: "Support patients in rehabilitation by providing encouragement and assisting with therapy tasks.",
     description: [
-      "Physical Therapy Aides support licensed physical therapists by preparing treatment areas, assisting patients with exercises, and maintaining equipment in outpatient rehab settings.",
-      "The program covers anatomy fundamentals, common rehab equipment, and patient-assist techniques, with a clinical externship at a partner rehab clinic.",
+      "Physical Therapy Technicians/Aides support patients in rehabilitation by providing encouragement, monitoring exercise programs, and assisting with basic therapy tasks. They are instrumental in helping patients recover strength, function, and independence.",
     ],
-    heroImage: "/images/programs/physical-therapy-aide-hero.jpg",
-    cardImage: "/images/programs/physical-therapy-aide-card.jpg",
-    curriculum: [
+    heroImage: "/images/programs/physical-therapy-aide.jpg",
+    cardImage: "/images/programs/physical-therapy-aide.jpg",
+    objectives: [
+      "Principles of physical therapy and rehabilitation",
+      "Patient positioning, transfers, and mobility assistance",
+      "Exercise and treatment techniques",
+      "Safety and infection control in therapy settings",
+      "Communication with patients and healthcare team",
+      "Professionalism and ethical standards in patient care",
+    ],
+    modules: [
       {
-        module: "Anatomy & Rehab Fundamentals",
-        outcomes: [
-          "Identify major muscle groups and joint movements relevant to rehab care",
-          "Explain the purpose of common rehab modalities and equipment",
-        ],
+        title: "Principles of Physical Therapy",
+        detail: "How rehabilitation works and the aide's role within the therapy team.",
       },
       {
-        module: "Patient Assistance",
-        outcomes: [
-          "Set up treatment areas and prepare equipment for therapy sessions",
-          "Assist patients safely through prescribed exercises under supervision",
-          "Support gait training with assistive devices (walkers, canes, parallel bars)",
-        ],
+        title: "Positioning, Transfers & Mobility",
+        detail: "Gait belts, wheelchairs, walkers, and moving patients safely.",
       },
       {
-        module: "Clinical Externship",
-        outcomes: [
-          "Rotate in an outpatient rehab clinic under a licensed therapist",
-          "Maintain accurate treatment-session documentation",
-        ],
+        title: "Exercise & Treatment Techniques",
+        detail: "Setting up exercise programs, hot/cold packs, and supporting therapist-led treatments.",
+      },
+      {
+        title: "Safety & Infection Control",
+        detail: "Equipment cleaning, fall prevention, and safe therapy environments.",
+      },
+      {
+        title: "Communicating with Patients & the Team",
+        detail: "Motivating patients through recovery and reporting progress to therapists.",
+      },
+      {
+        title: "Professionalism & Ethics",
+        detail: "Scope of practice, confidentiality, and professional conduct in patient care.",
       },
     ],
-    hours: { classroom: 80, lab: 60, externship: 60 },
-    certification: { exam: "Physical Therapy Aide Certificate Exam", body: "AMCA", onCampus: true },
+    skills: ["Patient Transfers", "Mobility Assistance", "Exercise Programs", "Therapy Equipment", "Fall Prevention", "Patient Motivation"],
+    handsOn: ["Transfers", "Gait Training", "Exercise Setup", "Therapy Equipment"],
+    studentQuote: "Helping someone take their first steps after surgery is the best part of my day — the program got me there fast.",
+    certification: { exam: "Physical Therapy Technician/Aide Certification (PTTC)", body: "AMCA", onCampus: true },
     outlook: {
-      employmentRate: "89%+",
-      salaryRange: "$27,000–$33,000",
-      growth: "8% (faster than average)",
-      environments: ["Outpatient rehab clinics", "Sports medicine clinics", "Hospital rehab departments"],
-      source: "U.S. Bureau of Labor Statistics, Physical Therapist Aides",
+      employmentRate: "95%+",
+      salaryRange: "$35,000 - $50,000",
+      growth: "Above Average",
+      environments: [
+        "Physical Therapy Clinics",
+        "Hospitals",
+        "Rehabilitation Centers",
+        "Sports Medicine Facilities",
+        "Long-Term Care Centers",
+      ],
     },
-    faqs: [
-      {
-        q: "Is this the same as a Physical Therapist Assistant (PTA)?",
-        a: "No — a PTA requires an associate degree and state licensure. This certificate prepares you for the aide role, which is a common first step into rehab care.",
-      },
-      {
-        q: "Can this program lead toward becoming a PTA later?",
-        a: "Many graduates use aide experience to confirm the career fit before pursuing a PTA associate degree program.",
-      },
-    ],
     relatedSlugs: ["orthopedic-casting", "patient-care-technician", "nursing-assistant"],
   },
 ];

@@ -1,5 +1,5 @@
 import { site } from "@/content/site";
-import type { Program, ProgramFaq } from "@/types";
+import type { Program } from "@/types";
 
 export function organizationSchema() {
   return {
@@ -67,7 +67,7 @@ export function courseSchema(program: Program) {
   };
 }
 
-export function faqPageSchema(faqs: ProgramFaq[] | { q: string; a: string }[]) {
+export function faqPageSchema(faqs: { q: string; a: string }[]) {
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",

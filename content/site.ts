@@ -18,6 +18,7 @@ export const site = {
   description:
     "NextGen Health Institute is an AMCA-accredited healthcare career-training school in Dallas, Texas, offering 11 certification programs from 2 to 24 weeks.",
   url: "https://www.nextgenhealthinstitute.com",
+  displayUrl: "www.nextgenhealthinstitute.com",
   address: {
     street: "2727 LBJ Fwy, Suite 1057",
     city: "Dallas",
@@ -28,10 +29,10 @@ export const site = {
   phone: "(214) 601-3361",
   phoneHref: "tel:+12146013361",
   email: "admissions@nextgenhealthinstitute.com",
+  // Verbatim from the live contact + application pages ("Walk-in Hours").
   hours: [
-    { days: "Monday–Thursday", hours: "8:00 AM–7:00 PM" },
-    { days: "Friday", hours: "8:00 AM–5:00 PM" },
-    { days: "Saturday", hours: "9:00 AM–1:00 PM (by appointment)" },
+    { days: "Monday–Friday", hours: "8:00 AM–6:00 PM" },
+    { days: "Saturday", hours: "Closed" },
     { days: "Sunday", hours: "Closed" },
   ],
   socials: {

@@ -1,5 +1,5 @@
 import { isRateLimited, sendLead } from "@/lib/leads";
-import { requestInfoSchema } from "@/lib/validation";
+import { applicationSchema, requestInfoSchema } from "@/lib/validation";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -19,7 +19,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  const parsed = requestInfoSchema.safeParse(body);
+  const isApplication =
+    typeof body === "object" && body !== null && (body as { formType?: unknown }).formType === "application";
+  const parsed = (isApplication ? applicationSchema : requestInfoSchema).safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(
       { error: "Please check the form for errors.", issues: parsed.error.flatten().fieldErrors },

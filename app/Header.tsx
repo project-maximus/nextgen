@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const navLinks = [
@@ -17,6 +18,9 @@ const navLinks = [
 
 const leftLinks = navLinks.slice(0, 2);
 
+/** Routes whose hero is white rather than a dark photo — the un-condensed desktop header switches to dark ink there. */
+const LIGHT_HERO_ROUTES = new Set(["/contact"]);
+
 function DotGridIcon({ tone = "light" }: { tone?: "light" | "dark" }) {
   return (
     <div className="grid grid-cols-3 gap-[3px]" aria-hidden="true">
@@ -27,17 +31,19 @@ function DotGridIcon({ tone = "light" }: { tone?: "light" | "dark" }) {
   );
 }
 
-function HamburgerButton({ condensed, onClick }: { condensed: boolean; onClick: () => void }) {
+function HamburgerButton({ condensed, dark, onClick }: { condensed: boolean; dark?: boolean; onClick: () => void }) {
   return (
     <button
       type="button"
       onClick={onClick}
       aria-label="Open menu"
-      className={`flex shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/15 transition-colors duration-200 hover:bg-white/25 ${
-        condensed ? "size-10" : "size-11"
-      }`}
+      className={`flex shrink-0 items-center justify-center rounded-full border transition-colors duration-200 ${
+        dark
+          ? "border-[var(--color-v4-line)] bg-[var(--color-v4-mist)] hover:bg-[var(--color-v4-line)]"
+          : "border-white/10 bg-white/15 hover:bg-white/25"
+      } ${condensed ? "size-10" : "size-11"}`}
     >
-      <DotGridIcon />
+      <DotGridIcon tone={dark ? "dark" : "light"} />
     </button>
   );
 }
@@ -46,6 +52,9 @@ export function Header() {
   const { pastThreshold: condensed } = useScrollDirection(80);
   const { pastThreshold: pastAnnouncementBar } = useScrollDirection(40);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const pathname = usePathname();
+  // Dark ink only while the header sits transparent over a white hero.
+  const ink = LIGHT_HERO_ROUTES.has(pathname) && !condensed;
 
   useEffect(() => {
     document.body.style.overflow = drawerOpen ? "hidden" : "";
@@ -117,11 +126,17 @@ export function Header() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="group relative py-2 text-[15px] font-normal text-white/85 transition-colors hover:text-white"
+                    className={`group relative py-2 text-[15px] font-normal transition-colors ${
+                      ink
+                        ? "text-[var(--color-v4-text-2)] hover:text-[var(--color-v4-text)]"
+                        : "text-white/85 hover:text-white"
+                    }`}
                   >
                     {link.label}
                     <span
-                      className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-white transition-transform duration-200 group-hover:scale-x-100"
+                      className={`absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 transition-transform duration-200 group-hover:scale-x-100 ${
+                        ink ? "bg-[var(--color-v4-ink-900)]" : "bg-white"
+                      }`}
                       aria-hidden="true"
                     />
                   </Link>
@@ -161,7 +176,8 @@ export function Header() {
                       className="flex items-center"
                     >
                       <Image
-                        src="/logos/nextgen-icon-lockup-black.png"
+                        // The default lockup has a white wordmark for dark photo heroes; white heroes need the all-black one.
+                        src={ink ? "/logos/nextgen-full-black.png" : "/logos/nextgen-icon-lockup-black.png"}
                         alt="NextGen Health Institute"
                         width={1402}
                         height={479}
@@ -188,7 +204,11 @@ export function Header() {
                   >
                     <Link
                       href="/contact"
-                      className="inline-flex h-11 items-center rounded-full border border-white/30 px-6 text-[15px] font-semibold text-white transition-colors hover:bg-white/10"
+                      className={`inline-flex h-11 items-center rounded-full border px-6 text-[15px] font-semibold transition-colors ${
+                        ink
+                          ? "border-[var(--color-v4-line)]! text-[var(--color-v4-text)] hover:bg-[var(--color-v4-mist)]"
+                          : "border-white/30 text-white hover:bg-white/10"
+                      }`}
                     >
                       Contact
                     </Link>
@@ -200,12 +220,14 @@ export function Header() {
                 className={
                   condensed
                     ? "inline-flex h-10 shrink-0 items-center rounded-full bg-white px-5 text-sm font-semibold text-[var(--color-v4-ink-900)] transition-[background-color,transform] duration-150 hover:-translate-y-px hover:bg-[var(--color-v4-mist)]"
-                    : "inline-flex h-11 shrink-0 items-center rounded-full bg-white px-4 text-sm font-semibold text-[var(--color-v4-ink-900)] transition-[background-color,transform] duration-150 hover:-translate-y-px hover:bg-[var(--color-v4-mist)] sm:px-7 sm:text-[15px]"
+                    : ink
+                      ? "inline-flex h-11 shrink-0 items-center rounded-full bg-[var(--color-v4-ink-900)] px-4 text-sm font-semibold text-white transition-[background-color,transform] duration-150 hover:-translate-y-px hover:bg-[var(--color-v4-ink-800)] sm:px-7 sm:text-[15px]"
+                      : "inline-flex h-11 shrink-0 items-center rounded-full bg-white px-4 text-sm font-semibold text-[var(--color-v4-ink-900)] transition-[background-color,transform] duration-150 hover:-translate-y-px hover:bg-[var(--color-v4-mist)] sm:px-7 sm:text-[15px]"
                 }
               >
                 Apply Now
               </Link>
-              <HamburgerButton condensed={condensed} onClick={() => setDrawerOpen(true)} />
+              <HamburgerButton condensed={condensed} dark={ink} onClick={() => setDrawerOpen(true)} />
             </div>
           </div>
         </div>

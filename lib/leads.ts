@@ -1,4 +1,4 @@
-import type { RequestInfoInput } from "@/lib/validation";
+import type { ApplicationInput, RequestInfoInput } from "@/lib/validation";
 
 /**
  * The single integration point for lead delivery. Currently logs/persists
@@ -7,15 +7,10 @@ import type { RequestInfoInput } from "@/lib/validation";
  * site for real lead capture. Every form posts through app/api/lead/route.ts,
  * which is the only caller of this function.
  */
-export async function sendLead(lead: RequestInfoInput): Promise<void> {
-  console.info("[lead:received]", {
-    formType: lead.formType,
-    name: lead.name,
-    email: lead.email,
-    phone: lead.phone,
-    programSlug: lead.programSlug,
-    receivedAt: new Date().toISOString(),
-  });
+export async function sendLead(lead: RequestInfoInput | ApplicationInput): Promise<void> {
+  // Drop consent/honeypot; log everything else so nothing an applicant typed is lost.
+  const fields = Object.fromEntries(Object.entries(lead).filter(([key]) => key !== "consent" && key !== "honeypot"));
+  console.info("[lead:received]", { ...fields, receivedAt: new Date().toISOString() });
 }
 
 interface RateLimitEntry {
