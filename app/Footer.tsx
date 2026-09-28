@@ -12,9 +12,6 @@ import type { ReactNode } from "react";
 const anton = Anton({ weight: "400", subsets: ["latin"] });
 
 const institute = [
-  { label: "About", href: "/about" },
-  { label: "How It Works", href: "/how-it-works" },
-  { label: "Outcomes", href: "/outcomes" },
   { label: "Cost & Financial Aid", href: "/cost" },
   { label: "Contact", href: "/contact" },
 ];

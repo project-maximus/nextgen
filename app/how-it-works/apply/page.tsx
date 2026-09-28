@@ -57,7 +57,7 @@ export default function ApplyPage() {
         mobileImagePosition="64% 20%"
         grayscale
         breadcrumb={[
-          { label: "How It Works", href: "/how-it-works" },
+          { label: "Home", href: "/" },
           { label: "Apply", href: "/how-it-works/apply" },
         ]}
       >

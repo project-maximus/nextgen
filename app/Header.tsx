@@ -1,8 +1,12 @@
 "use client";
 
 import { useScrollDirection } from "@/components/motion-v4/useScrollDirection";
+import { formatCohortDate, getNextClassStart } from "@/content/dates";
+import { prep } from "@/content/prep";
+import { programs } from "@/content/programs";
+import { site } from "@/content/site";
 import { AnimatePresence, motion } from "framer-motion";
-import { X } from "lucide-react";
+import { ArrowRight, ArrowUpRight, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -11,9 +15,6 @@ import { useEffect, useState } from "react";
 const navLinks = [
   { label: "Programs", href: "/programs" },
   { label: "NGHI Prep", href: "/prep" },
-  { label: "Outcomes", href: "/outcomes" },
-  { label: "About", href: "/about" },
-  { label: "How It Works", href: "/how-it-works" },
 ];
 
 const leftLinks = navLinks.slice(0, 2);
@@ -249,57 +250,154 @@ export function Header() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
             className="v4-scope v4-on-navy fixed inset-0 z-[60] flex flex-col bg-[var(--color-v4-ink-950)]"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site menu"
           >
-            <div className="flex h-[72px] items-center justify-between px-6">
-              <Image
-                src="/logos/nextgen-icon-lockup-white.png"
-                alt="NextGen Health Institute"
-                width={1402}
-                height={479}
-                className="h-8 w-auto"
-              />
+            <div className="mx-auto flex h-[72px] w-full max-w-[1600px] shrink-0 items-center justify-between px-6 md:px-8 xl:px-10">
+              <Link href="/" onClick={() => setDrawerOpen(false)} aria-label="NextGen Health Institute home">
+                <Image
+                  src="/logos/nextgen-full-white.png"
+                  alt="NextGen Health Institute"
+                  width={1402}
+                  height={478}
+                  className="h-8 w-auto"
+                />
+              </Link>
               <button
                 type="button"
                 onClick={() => setDrawerOpen(false)}
                 aria-label="Close menu"
-                className="flex size-10 items-center justify-center text-white"
+                className="flex size-11 items-center justify-center rounded-full border border-white/15 text-white transition-colors hover:bg-white/10"
               >
-                <X className="size-6" aria-hidden="true" />
+                <X className="size-5" aria-hidden="true" />
               </button>
             </div>
-            <nav className="flex flex-1 flex-col justify-center gap-2 px-6" aria-label="Primary">
-              {navLinks.map((link, i) => (
+
+            {/* Scrolls on short screens; the action bar below stays pinned. */}
+            <div className="flex-1 overflow-y-auto">
+              <div className="mx-auto grid w-full max-w-[1600px] grid-cols-1 gap-12 px-6 pb-10 pt-8 md:px-8 lg:min-h-full lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.9fr)] lg:items-center lg:gap-16 lg:py-10 xl:px-10">
+                {/* Primary links */}
+                <nav aria-label="Primary">
+                  <ul className="flex flex-col">
+                    {[...navLinks, { label: "Contact", href: "/contact" }].map((link, i) => (
+                      <motion.li
+                        key={link.href}
+                        initial={{ opacity: 0, y: 16 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: 0.05 + i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+                        className="border-b border-white/10 first:border-t"
+                      >
+                        <Link
+                          href={link.href}
+                          onClick={() => setDrawerOpen(false)}
+                          className="group flex items-center gap-5 py-5 lg:py-6"
+                        >
+                          <span className="tnum w-6 text-sm text-white/40">{String(i + 1).padStart(2, "0")}</span>
+                          <span className="flex-1 text-[clamp(2rem,1.3rem+2.6vw,3.5rem)] font-normal leading-none tracking-[-0.02em] text-white transition-transform duration-300 group-hover:translate-x-1">
+                            {link.label}
+                          </span>
+                          <ArrowRight
+                            className="size-6 -translate-x-2 text-white/0 transition-all duration-300 group-hover:translate-x-0 group-hover:text-white"
+                            strokeWidth={1.5}
+                            aria-hidden="true"
+                          />
+                        </Link>
+                      </motion.li>
+                    ))}
+                  </ul>
+                </nav>
+
+                {/* All programs */}
                 <motion.div
-                  key={link.href}
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.35, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 0.4, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <Link
-                    href={link.href}
-                    onClick={() => setDrawerOpen(false)}
-                    className="block py-3 text-[34px] font-normal leading-tight tracking-tight text-white"
-                  >
-                    {link.label}
-                  </Link>
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/45">
+                    {programs.length} Programs
+                  </p>
+                  <ul className="mt-5 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
+                    {programs.map((p) => (
+                      <li key={p.slug}>
+                        <Link
+                          href={`/programs/${p.slug}`}
+                          onClick={() => setDrawerOpen(false)}
+                          className="text-[15px] text-white/75 transition-colors hover:text-white"
+                        >
+                          {p.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
                 </motion.div>
-              ))}
-            </nav>
-            <div className="flex flex-col gap-3 px-6 pb-10">
-              <Link
-                href="/how-it-works/apply"
-                onClick={() => setDrawerOpen(false)}
-                className="flex h-12 items-center justify-center rounded-full bg-white text-[15px] font-semibold text-[var(--color-v4-ink-900)]"
-              >
-                Apply Now
-              </Link>
-              <Link
-                href="/contact"
-                onClick={() => setDrawerOpen(false)}
-                className="flex h-12 items-center justify-center rounded-full border border-white/30 text-[15px] font-semibold text-white"
-              >
-                Contact
-              </Link>
+
+                {/* Contact */}
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                  className="flex flex-col gap-6"
+                >
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/45">Get in touch</p>
+                    <a href={site.phoneHref} className="mt-4 block text-lg text-white hover:text-white/75">
+                      {site.phone}
+                    </a>
+                    <a
+                      href={`mailto:${site.email}`}
+                      className="mt-1 block text-sm text-white/65 [overflow-wrap:anywhere] hover:text-white"
+                    >
+                      {site.email}
+                    </a>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/45">Campus</p>
+                    <p className="mt-4 text-sm leading-relaxed text-white/75">
+                      {site.address.street}
+                      <br />
+                      {site.address.city}, {site.address.state} {site.address.zip}
+                    </p>
+                    <p className="mt-2 text-sm text-white/50">
+                      {site.hours[0].days}, {site.hours[0].hours}
+                    </p>
+                  </div>
+                  <a
+                    href={prep.loginUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 self-start text-sm font-semibold text-white hover:text-white/75"
+                  >
+                    NGHI Prep student sign in
+                    <ArrowUpRight className="size-4" strokeWidth={1.5} aria-hidden="true" />
+                  </a>
+                </motion.div>
+              </div>
+            </div>
+
+            {/* Action bar */}
+            <div className="shrink-0 border-t border-white/10">
+              <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-3 px-6 py-5 sm:flex-row sm:items-center sm:justify-between md:px-8 xl:px-10">
+                <p className="hidden text-sm text-white/60 sm:block">
+                  Next cohort starts{" "}
+                  <span className="font-semibold text-white">{formatCohortDate(getNextClassStart().startDate)}</span>
+                </p>
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  <Link
+                    href="/how-it-works/apply"
+                    onClick={() => setDrawerOpen(false)}
+                    className="flex h-12 items-center justify-center rounded-full bg-white px-8 text-[15px] font-semibold text-[var(--color-v4-ink-900)] transition-colors hover:bg-[var(--color-v4-mist)]"
+                  >
+                    Apply Now
+                  </Link>
+                  <a
+                    href={site.phoneHref}
+                    className="flex h-12 items-center justify-center rounded-full border border-white/25 px-8 text-[15px] font-semibold text-white transition-colors hover:bg-white/10"
+                  >
+                    Call {site.phone}
+                  </a>
+                </div>
+              </div>
             </div>
           </motion.div>
         )}
