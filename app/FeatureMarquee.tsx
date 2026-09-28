@@ -44,7 +44,7 @@ export function VideoLessonsVisual() {
   );
 }
 
-function AudioLessonsVisual({ reducedMotion }: { reducedMotion: boolean }) {
+export function AudioLessonsVisual({ reducedMotion }: { reducedMotion: boolean }) {
   const [progress, setProgress] = useState(35);
 
   useEffect(() => {

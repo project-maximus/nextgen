@@ -20,6 +20,8 @@ const leftLinks = navLinks.slice(0, 2);
 
 /** Routes whose hero is white rather than a dark photo — the un-condensed desktop header switches to dark ink there. */
 const LIGHT_HERO_ROUTES = new Set(["/contact"]);
+/** Routes whose hero is solid black — the lockup's black mark would vanish, so use the all-white logo. */
+const SOLID_DARK_HERO_ROUTES = new Set(["/prep"]);
 
 function DotGridIcon({ tone = "light" }: { tone?: "light" | "dark" }) {
   return (
@@ -177,7 +179,13 @@ export function Header() {
                     >
                       <Image
                         // The default lockup has a white wordmark for dark photo heroes; white heroes need the all-black one.
-                        src={ink ? "/logos/nextgen-full-black.png" : "/logos/nextgen-icon-lockup-black.png"}
+                        src={
+                          ink
+                            ? "/logos/nextgen-full-black.png"
+                            : SOLID_DARK_HERO_ROUTES.has(pathname)
+                              ? "/logos/nextgen-full-white.png"
+                              : "/logos/nextgen-icon-lockup-black.png"
+                        }
                         alt="NextGen Health Institute"
                         width={1402}
                         height={479}
