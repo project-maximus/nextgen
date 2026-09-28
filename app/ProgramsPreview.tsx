@@ -3,10 +3,10 @@
 import { Reveal } from "@/components/motion-v4/Reveal";
 import { programs } from "@/content/programs";
 import type { Program, ProgramFormat } from "@/types";
-import { ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const formatLabel: Record<ProgramFormat, string> = {
   hybrid: "Hybrid Format",
@@ -15,8 +15,6 @@ const formatLabel: Record<ProgramFormat, string> = {
   flexible: "Flexible Format",
 };
 
-const preview = programs.slice(0, 4);
-const rest = programs.slice(4);
 
 function ProgramCard({ program }: { program: Program }) {
   return (
@@ -31,6 +29,11 @@ function ProgramCard({ program }: { program: Program }) {
         sizes="(max-width: 640px) 280px, 320px"
         className="object-cover transition-transform duration-500 group-hover:scale-105"
         style={{ filter: "saturate(0.9) contrast(1.05)" }}
+      />
+      {/* Even tint so bright photos sit together; it lifts on hover to spotlight the card. */}
+      <div
+        className="absolute inset-0 bg-black/25 transition-opacity duration-300 group-hover:opacity-0"
+        aria-hidden="true"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/0 to-black/0" aria-hidden="true" />
 
@@ -58,51 +61,82 @@ function ProgramCard({ program }: { program: Program }) {
 }
 
 export function ProgramsPreview() {
-  const [showAll, setShowAll] = useState(false);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(true);
+
+  const updateArrows = useCallback(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    setCanPrev(el.scrollLeft > 4);
+    setCanNext(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  }, []);
+
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    updateArrows();
+    el.addEventListener("scroll", updateArrows, { passive: true });
+    window.addEventListener("resize", updateArrows);
+    return () => {
+      el.removeEventListener("scroll", updateArrows);
+      window.removeEventListener("resize", updateArrows);
+    };
+  }, [updateArrows]);
+
+  /** Scroll by roughly one viewport of cards. */
+  const scrollByPage = (dir: 1 | -1) => {
+    const el = trackRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir * Math.max(el.clientWidth * 0.8, 300), behavior: "smooth" });
+  };
+
+  const arrowClass =
+    "flex size-11 items-center justify-center rounded-full border border-[var(--color-v4-line)] text-[var(--color-v4-text)] transition-colors duration-150 hover:bg-[var(--color-v4-mist)] disabled:cursor-default disabled:opacity-35 disabled:hover:bg-transparent";
 
   return (
     <section className="v4-scope bg-white pb-16 pt-24">
       <Reveal>
-        <div className="mx-auto max-w-[1600px] px-6 md:px-8 xl:px-10">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--color-v4-text-3)]">
-            Certification Programs
-          </p>
-          <h2 className="mt-3 max-w-[20ch] text-[clamp(1.75rem,1.2rem+1.9vw,2.5rem)] font-normal leading-[1.12] tracking-[-0.015em] text-[var(--color-v4-text)]">
-            Eleven paths into a healthcare career.
-          </h2>
+        <div className="mx-auto flex max-w-[1600px] items-end justify-between gap-6 px-6 md:px-8 xl:px-10">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--color-v4-text-3)]">
+              Certification Programs
+            </p>
+            <h2 className="mt-3 max-w-[20ch] text-[clamp(1.75rem,1.2rem+1.9vw,2.5rem)] font-normal leading-[1.12] tracking-[-0.015em] text-[var(--color-v4-text)]">
+              Eleven paths into a healthcare career.
+            </h2>
+          </div>
+          <div className="hidden shrink-0 items-center gap-2 sm:flex">
+            <button type="button" onClick={() => scrollByPage(-1)} disabled={!canPrev} aria-label="Previous programs" className={arrowClass}>
+              <ArrowLeft className="size-4" strokeWidth={1.5} aria-hidden="true" />
+            </button>
+            <button type="button" onClick={() => scrollByPage(1)} disabled={!canNext} aria-label="Next programs" className={arrowClass}>
+              <ArrowRight className="size-4" strokeWidth={1.5} aria-hidden="true" />
+            </button>
+          </div>
         </div>
       </Reveal>
 
-      <div className="mt-10 flex gap-5 overflow-x-auto scroll-smooth px-6 pb-2 [-ms-overflow-style:none] [scrollbar-width:none] md:px-8 xl:px-10 [&::-webkit-scrollbar]:hidden">
-        {preview.map((program) => (
-          <div key={program.slug} className="w-[280px] shrink-0 sm:w-[320px]">
+      <div
+        ref={trackRef}
+        className="mt-10 flex snap-x snap-mandatory scroll-px-6 gap-5 overflow-x-auto scroll-smooth px-6 pb-2 [-ms-overflow-style:none] [scrollbar-width:none] md:scroll-px-8 md:px-8 xl:scroll-px-10 xl:px-10 [&::-webkit-scrollbar]:hidden"
+      >
+        {programs.map((program) => (
+          <div key={program.slug} className="w-[280px] shrink-0 snap-start sm:w-[320px]">
             <ProgramCard program={program} />
           </div>
         ))}
       </div>
 
-      {showAll && (
-        <div className="mx-auto mt-6 grid max-w-[1600px] grid-cols-2 gap-5 px-6 sm:grid-cols-3 md:px-8 lg:grid-cols-4 xl:px-10">
-          {rest.map((program) => (
-            <ProgramCard key={program.slug} program={program} />
-          ))}
-        </div>
-      )}
-
       <Reveal delay={0.15}>
         <div className="mt-10 text-center">
-          <button
-            type="button"
-            onClick={() => setShowAll((value) => !value)}
+          <Link
+            href="/programs"
             className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-v4-text)] hover:text-[var(--color-v4-text-2)]"
           >
-            View all 11 programs
-            <ArrowRight
-              className={`size-4 transition-transform duration-300 ${showAll ? "-rotate-90" : ""}`}
-              strokeWidth={1.5}
-              aria-hidden="true"
-            />
-          </button>
+            View all {programs.length} programs
+            <ArrowRight className="size-4" strokeWidth={1.5} aria-hidden="true" />
+          </Link>
         </div>
       </Reveal>
     </section>
