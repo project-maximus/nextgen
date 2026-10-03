@@ -9,7 +9,7 @@ export function HandsOnTraining({ program }: { program: Program }) {
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,480px)_1fr] lg:items-stretch lg:gap-24">
           <Reveal className="lg:h-full">
             <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[24px] lg:aspect-auto lg:h-full lg:min-h-[320px]">
-              <Image src={program.cardImage} alt="" fill sizes="(max-width: 1024px) 100vw, 480px" className="object-cover" />
+              <Image src={program.cardImage} alt={`Hands-on ${program.name} training`} fill sizes="(max-width: 1024px) 100vw, 480px" className="object-cover" />
             </div>
           </Reveal>
 

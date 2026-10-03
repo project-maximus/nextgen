@@ -1,7 +1,8 @@
 import { FinalCTA } from "@/app/FinalCTA";
 import { getProgramBySlug, programs } from "@/content/programs";
 import { pageMetadata } from "@/lib/seo";
-import { breadcrumbListSchema, courseSchema, jsonLd } from "@/lib/schema";
+import { getProgramFaqs } from "@/lib/program-faqs";
+import { breadcrumbListSchema, courseSchema, faqPageSchema, jsonLd } from "@/lib/schema";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CertificationSection } from "./CertificationSection";
@@ -27,10 +28,15 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const program = getProgramBySlug((await params).slug);
   if (!program) return {};
+  const format = { hybrid: "hybrid", online: "online", "in-person": "in-person", flexible: "online, hybrid or in-person" }[
+    program.format
+  ];
   return pageMetadata({
-    title: `${program.name} Program`,
-    description: program.blurb,
+    title: `${program.name} Program in Dallas, TX`,
+    description: `${program.name} training in Dallas, TX — ${program.duration}, ${format}. Prepare for ${program.credential} at NextGen Health Institute, an AMCA-accredited school.`,
     path: `/programs/${program.slug}`,
+    image: program.cardImage,
+    imageAlt: `${program.name} training at NextGen Health Institute`,
   });
 }
 
@@ -39,7 +45,7 @@ export default async function ProgramPage({ params }: Props) {
   if (!program) notFound();
 
   const breadcrumbItems = [
-    { label: "Home", href: "/" },
+    { label: "Home", href: "" },
     { label: "Programs", href: "/programs" },
     { label: program.name, href: `/programs/${program.slug}` },
   ];
@@ -50,6 +56,10 @@ export default async function ProgramPage({ params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLd(breadcrumbListSchema(breadcrumbItems)) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd(faqPageSchema(getProgramFaqs(program))) }}
       />
 
       <ProgramHero program={program} />

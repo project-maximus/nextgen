@@ -106,3 +106,17 @@ export const faqGroups: FaqGroup[] = [
 
 /** Flat list of every FAQ item, for sections that pull a curated subset by id (e.g. FAQAccordion). */
 export const allFaqItems = faqGroups.flatMap((group) => group.items);
+
+const pick = (ids: string[]) => allFaqItems.filter((item) => ids.includes(item.id));
+
+/** Homepage FAQ subset — also emitted as FAQPage structured data. */
+export const homeFaqs = pick(["programs-choose", "cost-aid-options", "cert-where", "admissions-how-long", "campus-tour"]);
+
+/** /programs FAQ subset, for someone still comparing programs — also emitted as FAQPage structured data. */
+export const programsPageFaqs = pick([
+  "programs-choose",
+  "programs-schedule",
+  "programs-switch",
+  "cost-tuition",
+  "admissions-requirements",
+]);

@@ -1,41 +1,14 @@
 "use client";
 
 import { Reveal } from "@/components/motion-v4/Reveal";
-import { formatCohortDate, getNextClassStart } from "@/content/dates";
+import { getProgramFaqs } from "@/lib/program-faqs";
 import type { Program } from "@/types";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
-const formatLabel: Record<Program["format"], string> = {
-  hybrid: "hybrid — a mix of on-campus labs and online coursework",
-  online: "fully online",
-  "in-person": "in-person, on campus",
-  flexible: "flexible — online, hybrid, or in-person",
-};
-
 export function ProgramFaqs({ program }: { program: Program }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
-  const nextClass = getNextClassStart();
-
-  const items = [
-    { q: "How long is the program?", a: `${program.duration}, depending on the track you choose.` },
-    { q: "Is it online or in person?", a: `This program is ${formatLabel[program.format]}.` },
-    {
-      q: "Do I need healthcare experience?",
-      a: "No prior healthcare experience is required — this program is built for career-changers starting from scratch.",
-    },
-    { q: "What certification will I prepare for?", a: `You'll prepare for the ${program.credential}, administered by ${program.certification.body}.` },
-    {
-      q: "Is job placement guaranteed?",
-      a: "We don't guarantee job placement, but advisors provide job search and placement support after graduation, and graduate employment rates run around " +
-        program.outlook.employmentRate + ".",
-    },
-    {
-      q: "Are payment plans available?",
-      a: "Yes — payment plans are available for students who qualify, alongside Pell Grants and federal loans.",
-    },
-    { q: "When is the next class?", a: `The next cohort starts ${formatCohortDate(nextClass.startDate)}.` },
-  ];
+  const items = getProgramFaqs(program);
 
   return (
     <section className="v4-scope border-t border-[var(--color-v4-line)] bg-white py-16 sm:py-24">

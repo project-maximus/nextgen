@@ -13,6 +13,7 @@ import {
 import { formatCohortDate, getNextClassStart, getUpcomingStartDates } from "@/content/dates";
 import { programs } from "@/content/programs";
 import { site } from "@/content/site";
+import { breadcrumbListSchema, jsonLd } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
 import { Check } from "lucide-react";
 import type { Metadata } from "next";
@@ -21,7 +22,7 @@ import { Suspense } from "react";
 import { ApplicationForm } from "./ApplicationForm";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Apply Now",
+  title: "Apply Now — Admissions",
   description:
     "Apply to NextGen Health Institute online in about 10 minutes. New classes begin monthly — typical application timeline is 1–2 weeks.",
   path: "/how-it-works/apply",
@@ -48,6 +49,12 @@ export default function ApplyPage() {
 
   return (
     <div className="v4-scope bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLd(breadcrumbListSchema([{ label: "Home", href: "" }, { label: "Apply", href: "/how-it-works/apply" }])),
+        }}
+      />
       <PageHero
         eyebrow="Apply Now"
         title="Your healthcare career starts here."

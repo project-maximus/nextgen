@@ -1,6 +1,7 @@
 import { Reveal } from "@/components/motion-v4/Reveal";
 import { ImageBand } from "@/components/sections/ImageBand";
 import { site } from "@/content/site";
+import { breadcrumbListSchema, jsonLd } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
 import { ArrowRight, ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
 import type { Metadata } from "next";
@@ -10,7 +11,7 @@ import { ContactForm } from "./ContactForm";
 import { ContactHero } from "./ContactHero";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Contact Admissions",
+  title: "Contact Admissions in Dallas, TX",
   description: `Talk to NextGen Health Institute admissions — call ${site.phone}, email ${site.email}, or visit our Dallas campus at ${site.address.street}.`,
   path: "/contact",
 });
@@ -53,6 +54,12 @@ function pad(n: number) {
 export default function ContactPage() {
   return (
     <div className="v4-scope bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLd(breadcrumbListSchema([{ label: "Home", href: "" }, { label: "Contact", href: "/contact" }])),
+        }}
+      />
       <ContactHero />
       <div className="h-[16vh] w-full" aria-hidden="true">
         <div className="mx-auto h-full w-px bg-[var(--color-v4-line)]" />

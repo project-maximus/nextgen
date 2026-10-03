@@ -1,14 +1,11 @@
 "use client";
 
 import { Reveal } from "@/components/motion-v4/Reveal";
-import { allFaqItems } from "@/content/faqs";
+import { homeFaqs } from "@/content/faqs";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
-// Same homepage-appropriate subset used on home-v1 (content/faqs.ts is the
-// single source of truth — never fork the copy).
-const homeFaqIds = ["programs-choose", "cost-aid-options", "cert-where", "admissions-how-long", "campus-tour"];
-const items = allFaqItems.filter((item) => homeFaqIds.includes(item.id));
+const items = homeFaqs;
 
 export function FAQSection() {
   const [openId, setOpenId] = useState<string | null>(items[0]?.id ?? null);

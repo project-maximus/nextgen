@@ -17,7 +17,7 @@ export function ProgramHero({ program }: { program: Program }) {
         <div className="relative min-h-[560px] overflow-hidden rounded-[32px] md:min-h-[620px]">
           <Image
             src={program.cardImage}
-            alt=""
+            alt={`${program.name} training at NextGen Health Institute in Dallas, Texas`}
             fill
             priority
             sizes="(max-width: 1360px) 100vw, 1360px"

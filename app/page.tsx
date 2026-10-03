@@ -1,3 +1,6 @@
+import { homeFaqs } from "@/content/faqs";
+import { site } from "@/content/site";
+import { faqPageSchema, jsonLd } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import { CredibilityStrip } from "./CredibilityStrip";
@@ -11,15 +14,17 @@ import { ProgramsPreview } from "./ProgramsPreview";
 import { StoryScroll } from "./StoryScroll";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Train for the Career Healthcare Can't Run Without",
+  title: `${site.name} | Healthcare Career Training in Dallas, TX`,
+  absoluteTitle: true,
   description:
-    "AMCA-accredited healthcare career training in Dallas–Fort Worth. Hands-on labs, instructors who still work the job, and NGHI Prep — a free AI-powered study platform included with every program.",
-  path: "/",
+    "AMCA-accredited healthcare career training in Dallas–Fort Worth: 11 certification programs from 2 to 24 weeks, hands-on labs, and an on-campus Pearson VUE testing site.",
+  path: "",
 });
 
 export default function HomePage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(faqPageSchema(homeFaqs)) }} />
       <Hero />
       <CredibilityStrip />
       <PartnerMarquee />

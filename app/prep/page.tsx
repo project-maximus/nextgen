@@ -1,7 +1,8 @@
 import { Reveal } from "@/components/motion-v4/Reveal";
 import { ScrollFillText } from "@/components/motion-v4/ScrollFillText";
-import { prep, prepAdminFeatures, prepCatalog, prepSteps } from "@/content/prep";
+import { prep, prepAdminFeatures, prepCatalog, prepFaqs, prepSteps } from "@/content/prep";
 import { programs } from "@/content/programs";
+import { breadcrumbListSchema, faqPageSchema, jsonLd } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import type { Metadata } from "next";
@@ -13,7 +14,7 @@ import { PrepHero } from "./PrepHero";
 export const metadata: Metadata = pageMetadata({
   title: "NGHI Prep — AI Study Platform",
   description:
-    "NGHI Prep is the study platform included with every NextGen Health Institute program: AI tutoring, mock exams, flashcards, and a readiness score — grounded in your own course material.",
+    "NGHI Prep is the study platform included with every NextGen Health Institute program: AI tutoring, mock exams and flashcards grounded in your own course material.",
   path: "/prep",
 });
 
@@ -35,6 +36,13 @@ const claims = [
 export default function PrepPage() {
   return (
     <div className="v4-scope bg-white">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(faqPageSchema(prepFaqs)) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLd(breadcrumbListSchema([{ label: "Home", href: "" }, { label: "NGHI Prep", href: "/prep" }])),
+        }}
+      />
       <PrepHero />
 
       {/* Claims strip */}

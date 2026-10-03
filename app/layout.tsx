@@ -6,7 +6,7 @@ import { MotionProvider } from "@/components/motion/MotionProvider";
 import { SmoothScrollProvider } from "@/components/motion-v4/SmoothScrollProvider";
 import { ToastProvider } from "@/components/ui/Toast";
 import { site } from "@/content/site";
-import { jsonLd, localBusinessSchema, organizationSchema } from "@/lib/schema";
+import { jsonLd, organizationSchema, websiteSchema } from "@/lib/schema";
 import type { Metadata } from "next";
 import { Sora } from "next/font/google";
 import "./globals.css";
@@ -21,10 +21,18 @@ const sora = Sora({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} | ${site.tagline}`,
-    template: `%s | ${site.shortName}`,
+    default: `${site.name} | Healthcare Career Training in Dallas, TX`,
+    template: `%s | ${site.name}`,
   },
   description: site.description,
+  applicationName: site.name,
+  category: "education",
+  formatDetection: { telephone: true, address: true, email: true },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -37,7 +45,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: jsonLd(localBusinessSchema()) }}
+          dangerouslySetInnerHTML={{ __html: jsonLd(websiteSchema()) }}
         />
       </head>
       <body className="flex min-h-screen flex-col antialiased">

@@ -1,14 +1,11 @@
 "use client";
 
 import { Reveal } from "@/components/motion-v4/Reveal";
-import { allFaqItems } from "@/content/faqs";
+import { programsPageFaqs } from "@/content/faqs";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
-// Curated for someone still browsing/comparing programs, not one specific
-// program page — content/faqs.ts is the single source of truth.
-const PROGRAMS_FAQ_IDS = ["programs-choose", "programs-schedule", "programs-switch", "cost-tuition", "admissions-requirements"];
-const items = allFaqItems.filter((item) => PROGRAMS_FAQ_IDS.includes(item.id));
+const items = programsPageFaqs;
 
 export function ProgramsFaq() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
