@@ -8,6 +8,14 @@
   "main": ".open-next/worker.js",
   "compatibility_date": "2026-09-15",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  // Production hostnames. Cloudflare creates the DNS records and certificates
+  // for these itself — any existing A/CNAME on the same name must be deleted first.
+  "routes": [
+    { "pattern": "www.nextgenhealthinstitute.com", "custom_domain": true },
+    { "pattern": "nextgenhealthinstitute.com", "custom_domain": true }
+  ],
+  // Keep the *.workers.dev address alive for checking deploys.
+  "workers_dev": true,
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
