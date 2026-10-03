@@ -1,0 +1,30 @@
+/**
+ * Cloudflare Workers deployment (via @opennextjs/cloudflare).
+ * Deploy with `npm run deploy`; preview the Workers build locally with `npm run preview`.
+ */
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "nextgen",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-09-15",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      // Lets the worker call itself (used by OpenNext for caching/revalidation).
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "nextgen"
+    }
+  ],
+  // next/image optimization through Cloudflare Images.
+  "images": {
+    "binding": "IMAGES"
+  },
+  // Lead-form submissions are logged with console.info — keep them searchable in the dashboard.
+  "observability": {
+    "enabled": true
+  }
+}
