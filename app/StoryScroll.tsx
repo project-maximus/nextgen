@@ -5,8 +5,6 @@ import { useLenis } from "@/components/motion-v4/SmoothScrollProvider";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
-const VH_PER_STEP = 160;
-
 const steps = [
   {
     index: "01",
@@ -38,9 +36,10 @@ const steps = [
   },
 ];
 
-function Card({ activeIndex }: { activeIndex: number }) {
+/** `pinned` sizes the card to the viewport it is stuck in; stacked cards keep a fixed height. */
+function Card({ activeIndex, pinned = false }: { activeIndex: number; pinned?: boolean }) {
   return (
-    <div className="relative h-[600px] w-full overflow-hidden rounded-[32px] sm:h-[680px]">
+    <div className={`relative w-full overflow-hidden rounded-[32px] ${pinned ? "h-[min(600px,calc(100svh-6rem))] sm:h-[min(680px,calc(100svh-3rem))]" : "h-[600px] sm:h-[680px]"}`}>
       {steps.map((step, i) => (
         <div
           key={step.title}
@@ -62,10 +61,10 @@ function Card({ activeIndex }: { activeIndex: number }) {
       <div className="absolute inset-0 bg-black/35" aria-hidden="true" />
       <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 to-black/45" aria-hidden="true" />
 
-      <div className="relative z-10 flex h-full flex-col justify-between px-8 py-10 md:flex-row md:items-center md:justify-between md:px-12 md:py-14">
+      <div className="relative z-10 flex h-full flex-col justify-between px-8 py-10 md:flex-row md:items-center md:justify-between md:px-12 md:py-14 [@media(max-height:640px)_and_(max-width:767px)]:px-6 [@media(max-height:640px)_and_(max-width:767px)]:py-6">
         <div className="w-full max-w-sm shrink-0">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/60">What NGHI Offers</p>
-          <div className="relative mt-4 min-h-[12rem] sm:min-h-[11rem]">
+          <div className="relative mt-4 min-h-[12rem] sm:min-h-[11rem] [@media(max-height:640px)_and_(max-width:767px)]:mt-2.5 [@media(max-height:640px)_and_(max-width:767px)]:min-h-[8.75rem]">
             {steps.map((step, i) => (
               <div
                 key={step.title}
@@ -73,24 +72,24 @@ function Card({ activeIndex }: { activeIndex: number }) {
                   i === activeIndex ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
                 }`}
               >
-                <h2 className="text-2xl font-medium leading-tight tracking-[-0.01em] text-white sm:text-3xl">
+                <h2 className="text-2xl font-medium leading-tight tracking-[-0.01em] text-white sm:text-3xl [@media(max-height:640px)_and_(max-width:767px)]:text-xl">
                   {step.title}
                 </h2>
-                <p className="mt-4 text-base leading-relaxed text-white/75">{step.description}</p>
+                <p className="mt-4 text-base leading-relaxed text-white/75 [@media(max-height:640px)_and_(max-width:767px)]:mt-2 [@media(max-height:640px)_and_(max-width:767px)]:text-[13.5px] [@media(max-height:640px)_and_(max-width:767px)]:leading-snug">{step.description}</p>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="mt-10 flex shrink-0 flex-col items-start gap-5 md:mt-0 md:items-end">
+        <div className="mt-10 flex shrink-0 flex-col items-start gap-5 md:mt-0 md:items-end [@media(max-height:640px)_and_(max-width:767px)]:mt-4 [@media(max-height:640px)_and_(max-width:767px)]:gap-2.5">
           {steps.map((step, i) => (
             <div key={step.title} className="flex items-center gap-3">
               <span
-                className={`h-px w-6 transition-colors duration-300 ${i === activeIndex ? "bg-white" : "bg-white/20"}`}
+                className={`h-px w-6 shrink-0 transition-colors duration-300 max-[359px]:w-4 ${i === activeIndex ? "bg-white" : "bg-white/20"}`}
                 aria-hidden="true"
               />
               <span
-                className={`text-sm transition-colors duration-300 ${i === activeIndex ? "text-white" : "text-white/40"}`}
+                className={`whitespace-nowrap text-sm transition-colors duration-300 max-[359px]:text-[13px] ${i === activeIndex ? "text-white" : "text-white/40"}`}
               >
                 {step.title}
               </span>
@@ -121,8 +120,8 @@ export function StoryScroll() {
       if (!el) return;
       const rect = el.getBoundingClientRect();
       const scrollable = rect.height - window.innerHeight;
-      // Also true when the pinned wrapper is `display: none` below `lg`
-      // (zero-size rect) — the compact list renders separately below.
+      // Also true when the pinned wrapper is `display: none` on very short
+      // screens (zero-size rect) — the stacked list renders there instead.
       if (scrollable <= 0) return;
       const progress = Math.min(1, Math.max(0, -rect.top / scrollable));
       const idx = Math.min(steps.length - 1, Math.floor(progress * steps.length));
@@ -130,12 +129,15 @@ export function StoryScroll() {
     };
 
     evaluate();
-    if (lenis) {
-      lenis.on("scroll", evaluate);
-      return () => lenis.off("scroll", evaluate);
-    }
+    // Native scroll covers touch devices, where Lenis leaves scrolling to the browser.
     window.addEventListener("scroll", evaluate, { passive: true });
-    return () => window.removeEventListener("scroll", evaluate);
+    window.addEventListener("resize", evaluate);
+    lenis?.on("scroll", evaluate);
+    return () => {
+      window.removeEventListener("scroll", evaluate);
+      window.removeEventListener("resize", evaluate);
+      lenis?.off("scroll", evaluate);
+    };
   }, [lenis, reducedMotion]);
 
   if (reducedMotion) {
@@ -152,24 +154,25 @@ export function StoryScroll() {
 
   return (
     <>
-      {/* Below `lg` there's no room/pointer precision for a 4-step pinned
-       * scrub — touch-scroll flicks past dead space instead of settling on
-       * a step, so a plain stacked list takes over. Both variants render
-       * unconditionally and are toggled with CSS (not JS/viewport state) so
-       * there's no post-mount layout shift to desync GSAP ScrollTrigger on
-       * the sections below this one. */}
+      {/* Pinned on every screen size: the card sticks while the section scrolls
+       * past, and the active step follows scroll progress. Phones get a much
+       * shorter section (about one swipe per step) and the card is pinned under
+       * the fixed mobile header. Only very short viewports — a phone held
+       * sideways — can't fit the card, so they fall back to the stacked list.
+       * Both variants render unconditionally and are toggled with CSS (not
+       * JS/viewport state) so there's no post-mount layout shift to desync
+       * GSAP ScrollTrigger on the sections below this one. */}
       <section
         ref={sectionRef}
-        className="v4-scope hidden bg-white lg:block"
-        style={{ height: `${steps.length * VH_PER_STEP}vh` }}
+        className="v4-scope h-[340svh] bg-white lg:h-[640vh] [@media(max-height:559px)]:hidden"
       >
-        <div className="sticky top-0 flex h-screen items-center">
+        <div className="sticky top-16 flex h-[calc(100svh-4rem)] items-center sm:top-0 sm:h-[100svh]">
           <div className="mx-auto w-full max-w-[1600px] px-3 md:px-5 xl:px-6">
-            <Card activeIndex={activeIndex} />
+            <Card activeIndex={activeIndex} pinned />
           </div>
         </div>
       </section>
-      <section className="v4-scope bg-white py-16 lg:hidden">
+      <section className="v4-scope hidden bg-white py-16 [@media(max-height:559px)]:block">
         <div className="mx-auto flex max-w-[1600px] flex-col gap-6 px-3 md:px-5 xl:px-6">
           {steps.map((step, i) => (
             <Card key={step.title} activeIndex={i} />
